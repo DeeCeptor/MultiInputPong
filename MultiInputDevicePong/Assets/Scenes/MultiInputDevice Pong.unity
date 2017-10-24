@@ -824,6 +824,7 @@ MonoBehaviour:
   total_rounds: 27
   time_for_current_round: 0
   total_time_for_trial: 0
+  dont_check_player_count: 1
   trial_running: 0
   round_running: 0
   enforce_time_limit: 1
@@ -832,7 +833,7 @@ MonoBehaviour:
   survey_objects_to_activate:
   - {fileID: 91361631}
   - {fileID: 216551292}
-  input_delay_values: {fileID: 4900000, guid: dc52282963a4e5844acc35bb44f60925, type: 3}
+  input_delay_values: {fileID: 4900000, guid: df40127beb16180498120a3c8ab6960d, type: 3}
   input_delay_per_round: 
   practice_rounds: 
   survey_rounds: 
@@ -847,7 +848,7 @@ MonoBehaviour:
   opposite_wall: {fileID: 1877492208}
   timer_text: {fileID: 1241637946}
   starting_ball_path: {fileID: 639088854}
-  pong_settings: {fileID: 4900000, guid: 4ed7af3ae393c5a4091d69b7b78d5448, type: 3}
+  pong_settings: {fileID: 4900000, guid: 19cc3da2ac5ce754ca778b48376b371a, type: 3}
   ball_speeds: []
   distances_between_players: []
   bounces_since_last_reset: 0
@@ -2228,6 +2229,25 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1092053275}
+--- !u!1 &1223989366 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1714730199487676, guid: be15592e614c3cc419e42dc1db2538ac,
+    type: 2}
+  m_PrefabInternal: {fileID: 419498107}
+--- !u!114 &1223989373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1223989366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae1166341647e7e4d9fff560b8466dd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  object_to_activate: {fileID: 1778621694}
+  acivate_on_start: 1
+  activate_after_x_seconds: 0
 --- !u!1 &1239990912
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,6 +2794,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1621668258466508, guid: e907d70cde6b4714b9ba291393f10ca4, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e907d70cde6b4714b9ba291393f10ca4, type: 2}
   m_IsPrefabParent: 0
@@ -3175,7 +3199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allow_x_movement: 1
   allow_y_movement: 0
-  kicks_ball: 0
   sensitivity: 1
   adjust_sensitivity: 0
 --- !u!1 &1780125496

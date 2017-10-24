@@ -17,7 +17,6 @@ public class AbsoluteMovement : MonoBehaviour
     // How can the player move?
     public bool allow_x_movement = true;
     public bool allow_y_movement = true;
-    public bool kicks_ball = true;
 
     // What sensitivity are we currently using? Between min_sensitivity and max_sensitivity, 1 starts at 1
     // Can be altered using mouse wheel

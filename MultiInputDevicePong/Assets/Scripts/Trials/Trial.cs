@@ -84,6 +84,7 @@ public class Trial : MonoBehaviour
     public int total_rounds = 0;    // How many rounds are we aiming for?
     public float time_for_current_round;    // In seconds, elapsed time of current trial
     public float total_time_for_trial;  // In seconds, how long this trial has lasted
+    public bool dont_check_player_count = false;
     public bool trial_running = false;
     public bool round_running = false;
     public bool enforce_time_limit = false;     // Does this trial have a time limit for each round? Ex: each round is 3 seconds
@@ -162,7 +163,8 @@ public class Trial : MonoBehaviour
         UnityEngine.Random.InitState(999);
 
         ResetTrial();
-        MultiMouseManager.mouse_manager.players_can_join = false;
+        if (MultiMouseManager.mouse_manager != null)
+            MultiMouseManager.mouse_manager.players_can_join = false;
         trial_running = true;
         NextRound();
     }
@@ -353,7 +355,8 @@ public class Trial : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space) && !trial_running && ScoreManager.score_manager.players.Count == number_players_required)
+            if (Input.GetKeyDown(KeyCode.Space) && !trial_running && 
+                (ScoreManager.score_manager.players.Count == number_players_required || dont_check_player_count))
                 StartTrial();
         }
 	}
