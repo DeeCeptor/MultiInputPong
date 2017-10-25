@@ -8,6 +8,8 @@ public static class GlobalSettings
 {
     public enum Input_Device_Type { Mouse, Drawing_Tablet, Touchscreen };
     public static Input_Device_Type current_input_device = Input_Device_Type.Mouse;
+    public static Queue<Input_Device_Type> order_of_device_types = new Queue<Input_Device_Type>();
+
 
     // 0 means no input delay. 5 means 5 fixedupdates will pass before the input is applied
     public static int InputDelayFrames

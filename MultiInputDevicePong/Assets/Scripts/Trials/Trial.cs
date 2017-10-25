@@ -98,7 +98,9 @@ public class Trial : MonoBehaviour
     public List<int> input_delay_per_round = new List<int>();   // Read from a text file (input_delay_values)
     public bool[] practice_rounds;      // Read from a text file, which rounds are practice (don't count for data)
     public bool[] survey_rounds;        // Read from a text file, which rounds should launch a survey after they're done?
-
+    [HideInInspector]
+    public int rounds_since_survey = 0;
+    
     public string text_file_name = "Results.txt";
 
     public AudioSource timer_beeps;
@@ -237,12 +239,14 @@ public class Trial : MonoBehaviour
         round_results[current_round].round_time_taken = time_for_current_round;
         round_results[current_round].round_number = current_round + 1;
         round_results[current_round].trial_id = trial_id;
-        //round_results[current_round].num_rounds_since_survey = practice_rounds_per_survey > 0 ? current_round % survey_every_x_rounds : 0;
+        rounds_since_survey++;
+        round_results[current_round].num_rounds_since_survey = rounds_since_survey;
         round_results[current_round].practice_round = IsCurrentRoundRoundPractice() ? 1 : 0;
 
         // Should we bring up the survey window?
         if (survey_rounds[current_round])
         {
+            rounds_since_survey = 0;
             ActivateSurvey();
             ScoreManager.score_manager.ResetScore();
         }

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WasThereLagSurvey : SurveyPanel
 {
-
-
 	void Update () 
 	{
         // Check for 'Y' or 'N' press
@@ -29,10 +27,13 @@ public class SurveyPanel : MonoBehaviour
 
     public virtual void SubmitInfo(string value)
     {
-        ExtraRecordItem r = new ExtraRecordItem();
-        r.name = name_of_info;
-        r.value = value;
-        Trial.trial.AddSurveyResultsToRecords(r);
+        if (!string.IsNullOrEmpty(value))
+        {
+            ExtraRecordItem r = new ExtraRecordItem();
+            r.name = name_of_info;
+            r.value = value;
+            Trial.trial.AddSurveyResultsToRecords(r);
+        }
         Next();
     }
 

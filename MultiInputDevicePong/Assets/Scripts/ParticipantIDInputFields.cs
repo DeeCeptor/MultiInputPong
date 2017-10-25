@@ -8,6 +8,9 @@ public class ParticipantIDInputFields : MonoBehaviour
 {
     public int participant_index;
 
+    public Dropdown enable_dropdown;
+
+
 	void Start () 
 	{
         if (GlobalSettings.participant_ids[participant_index] == 0)
@@ -22,5 +25,7 @@ public class ParticipantIDInputFields : MonoBehaviour
         int result;
         Int32.TryParse(new_val, out result);
         GlobalSettings.participant_ids[participant_index] = result;
+
+        enable_dropdown.interactable = true;
     }
 }

@@ -9,26 +9,29 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 6f65c84e07ec78043abae4f141e69751
   - enabled: 1
-    path: Assets/Scenes/KickStationaryBall.unity
+    path: Assets/Scenes/MultiInputDevice Pong.unity
+    guid: 7ec60ef0f74eab043a0217d73cca37fc
+  - enabled: 1
+    path: Assets/Scenes/InputDelay/KickStationaryBall.unity
     guid: 55db307debfe42941828673db5d81b55
   - enabled: 1
-    path: Assets/Scenes/KickMovingBall.unity
+    path: Assets/Scenes/InputDelay/KickMovingBall.unity
     guid: 4d72d83c5368d7746a8285c32e083249
   - enabled: 1
-    path: Assets/Scenes/Pong.unity
+    path: Assets/Scenes/InputDelay/Pong.unity
     guid: dea95a63a45f175428dd982891fdccb1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SoloPong - like TeamPong.unity
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/TeamPong.unity
+    path: Assets/Scenes/InputDelay/TeamPong.unity
     guid: c09c23ef0c77be644aa2fe02636efb94
   - enabled: 1
-    path: Assets/Scenes/Long-MovingBall.unity
+    path: Assets/Scenes/InputDelay/Long-MovingBall.unity
     guid: 29adc6fc25cc4a740a51e434b7b28af1
   - enabled: 1
-    path: Assets/Scenes/Long-StationaryBall.unity
+    path: Assets/Scenes/InputDelay/Long-StationaryBall.unity
     guid: e13cc0f1460cea744b65b35172bf7d7a
   - enabled: 1
-    path: Assets/Scenes/TeamSoccer.unity
+    path: Assets/Scenes/InputDelay/TeamSoccer.unity
     guid: 0abc553e00f99e84487a16c866ef3770

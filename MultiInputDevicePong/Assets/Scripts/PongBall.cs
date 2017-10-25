@@ -66,6 +66,36 @@ public class PongBall : MonoBehaviour
             if (WillHitOtherWall(new_dir))
                 new_dir.x = -new_dir.x;
         }
+        else if (Trial.trial is MultiInputDevicePong)
+        {
+            MultiInputDevicePong pong = (MultiInputDevicePong)Trial.trial;
+            pong.current_round_record.total_bounces += 1;
+
+            // Check if hit player, or hit wall
+            Player p = collision.gameObject.GetComponent<Player>();
+            if (p != null && p.player_id == ScoreManager.score_manager.players[0].player_id)
+            {
+                // Hit player
+                pong.RecordPlayerBounce();
+
+                ScoreManager.score_manager.blue_score += 1;
+                new_dir = HitPlayerPaddle(contact_x, collision);
+                //Debug.Log("SoloPongLikeTeamPong hit player " + collision.gameObject.name);
+            }
+            else
+            {
+                // Hit wall
+                pong.current_round_record.wall_bounces++;
+
+                // Get a random new direction
+                float signed_normalized_difference = Random.Range(-1.0f, 1.0f);
+                new_dir = new Vector2(signed_normalized_difference * max_x_angle, -Mathf.Sign(physics.velocity.y) * 0.5f).normalized;
+                //Debug.Log("SoloPongLikeTeamPong hit wall " + collision.gameObject.name);
+            }
+
+            if (WillHitOtherWall(new_dir))
+                new_dir.x = -new_dir.x;
+        }
         else if (Trial.trial is SoloPongLikeTeamPong)
         {
             SoloPongLikeTeamPong pong = (SoloPongLikeTeamPong)Trial.trial;
