@@ -21,7 +21,17 @@ public class MultiInputDevicePongRecord : Round_Record
     public float avg_time_needed_on_all_bounces;
     public int total_misses;          // Each time the ball slips past is a miss. Want a low score (0 is the best possible score)
     public int unskilled_misses, skilled_misses;        // How many times the players missed the ball when the trajectory was shown. Trajectory is shown during the first shot of the round, and after every miss
+
+    // Positional information
     public float avg_dist_missed_by;    // Distance from the ball to the paddle when the ball entered 'end zone' (player screwed up)
+    public List<float> all_distances_missed_by = new List<float>();     // All distances missed by, where negative values mean ball was LEFT of the paddle
+    public List<float> paddle_positions_on_miss = new List<float>();    // Where was the paddle when the ball missed? (X pos)
+    public List<float> ball_positions_on_miss = new List<float>();       // Where was the ball when the ball entered the red zone? (X pos)
+    public List<float> mouse_x_positions_on_miss = new List<float>();     // Where was the mouse (in pixel coordinates?)
+    public List<float> mouse_y_positions_on_miss = new List<float>();
+    public List<float> mouse_game_x_positions_on_miss = new List<float>();     // Where was the mouse in-game coordinates?
+    public List<float> mouse_game_y_positions_on_miss = new List<float>();
+
     public float total_bounces_per_miss, unskilled_bounces_per_miss, skilled_bounces_per_miss;      // bounces / misses
     public float percent_bounces_missed;        // Having a high percentage is bad. 100% means all were missed. 50% means half were missed
     public float percent_skilled_bounces_missed;    // total_misses / skiled_bounces + total_misses. Having a high percentage is bad. 100% means were missed. 60% means 3/5ths were missed
@@ -43,9 +53,13 @@ public class MultiInputDevicePongRecord : Round_Record
         return base.ToString() + "," + device + "," + total_bounces + "," + player_bounces + "," + wall_bounces + "," + unskilled_bounces + "," + skilled_bounces + "," + skilled_bounces_minus_misses + "," + highest_skilled_bounce_streak
             + "," + Round_Record.ListToString<float>(time_needed_on_skilled_bounces) + "," + avg_time_needed_on_skilled_bounces
             + "," + Round_Record.ListToString<float>(time_needed_on_unskilled_bounces) + "," + avg_time_needed_on_unskilled_bounces
-            + "," + Round_Record.ListToString<float>(time_needed_on_all_bounces) + "," + avg_time_needed_on_all_bounces 
+            + "," + Round_Record.ListToString<float>(time_needed_on_all_bounces) + "," + avg_time_needed_on_all_bounces
             + "," + total_misses + "," + unskilled_misses + "," + skilled_misses
-            + "," + avg_dist_missed_by + "," + total_bounces_per_miss + "," + unskilled_bounces_per_miss + "," + skilled_bounces_per_miss + "," + percent_bounces_missed + "," + percent_skilled_bounces_missed
+            + "," + avg_dist_missed_by + "," + Round_Record.ListToString<float>(all_distances_missed_by) 
+            + "," + Round_Record.ListToString<float>(paddle_positions_on_miss) + "," + Round_Record.ListToString<float>(ball_positions_on_miss)
+            + "," + Round_Record.ListToString<float>(mouse_x_positions_on_miss) + "," + Round_Record.ListToString<float>(mouse_y_positions_on_miss)
+            + "," + Round_Record.ListToString<float>(mouse_game_x_positions_on_miss) + "," + Round_Record.ListToString<float>(mouse_game_y_positions_on_miss)
+            + "," + total_bounces_per_miss + "," + unskilled_bounces_per_miss + "," + skilled_bounces_per_miss + "," + percent_bounces_missed + "," + percent_skilled_bounces_missed
             + "," + Round_Record.ListToString<float>(time_needed_on_skilled_misses) + "," + avg_time_needed_on_skilled_miss
             + "," + Round_Record.ListToString<float>(time_needed_on_unskilled_misses) + "," + avg_time_needed_on_unskilled_miss
             + "," + Round_Record.ListToString<float>(time_needed_on_all_misses) + "," + avg_time_needed_on_all_miss
@@ -59,7 +73,11 @@ public class MultiInputDevicePongRecord : Round_Record
             + ",time_needed_on_unskilled_bounces,avg_time_needed_on_unskilled_bounces"
             + ",time_needed_on_all_bounces,avg_time_needed_on_all_bounces"
             + ",total_misses,unskilled_misses,skilled_misses"
-            + ",avg_dist_missed_by,total_bounces_per_miss,unskilled_bounces_per_miss,skilled_bounces_per_miss,percent_bounces_missed,percent_skilled_bounces_missed"
+            + ",avg_dist_missed_by,all_distances_missed_by"
+            + ",paddle_positions_on_miss,ball_positions_on_miss"
+            + ",mouse_x_positions_on_miss,mouse_y_positions_on_miss"
+            + ",mouse_game_x_positions_on_miss,mouse_game_y_positions_on_miss"
+            + ",total_bounces_per_miss,unskilled_bounces_per_miss,skilled_bounces_per_miss,percent_bounces_missed,percent_skilled_bounces_missed"
             + ",time_needed_on_skilled_misses,avg_time_needed_on_skilled_misses"
             + ",time_needed_on_unskilled_misses,avg_time_needed_on_unskilled_misses"
             + ",time_needed_on_all_misses,avg_time_needed_on_all_misses"
@@ -392,7 +410,21 @@ public class MultiInputDevicePong : Trial
         float missed_by = Ball.ball.GetComponent<PongBall>().DistanceFromBall(ScoreManager.score_manager.players[0].transform.position);
         current_round_record.avg_dist_missed_by += missed_by;
         float time_they_to_had_react = Ball.ball.GetComponent<PongBall>().TimeSinceLastCollision();
+        float signed_missed_by = missed_by;
 
+        // If ball was to the left of the paddle, make value negative
+        if (Ball.ball.transform.position.x < ScoreManager.score_manager.players[0].transform.position.x)
+            signed_missed_by = -missed_by;
+
+        // Positional information, where was everything when the miss happened?
+        current_round_record.paddle_positions_on_miss.Add(ScoreManager.score_manager.players[0].transform.position.x);
+        current_round_record.ball_positions_on_miss.Add(Ball.ball.transform.position.x);
+        current_round_record.mouse_x_positions_on_miss.Add(Input.mousePosition.x);
+        current_round_record.mouse_y_positions_on_miss.Add(Input.mousePosition.y);
+        current_round_record.mouse_game_x_positions_on_miss.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition).x);
+        current_round_record.mouse_game_y_positions_on_miss.Add(Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+
+        current_round_record.all_distances_missed_by.Add(signed_missed_by); 
         current_round_record.total_misses++;
         current_round_record.time_needed_on_all_misses.Add(time_they_to_had_react);
 

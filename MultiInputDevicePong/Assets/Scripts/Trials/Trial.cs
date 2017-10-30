@@ -7,19 +7,19 @@ using UnityEngine.UI;
 
 public class Round_Record
 {
-    public int trial_id;     // What task are we doing?
-    public string participant_id;   // . separated list of participants being used
+    public DateTime end_date;   // Records both date and time of the END of the round
+    public int trial_id;    // What task are we doing?
+    public string participant_id;
     public int round_number;
     public int ms_input_lag_of_round;
     public float round_time_taken = 0;
     public int practice_round = 0;     //  0 false: not a practice round, 1 true: is a practice round
     public int num_rounds_since_survey;      // Is this the 1st round after a survey? The 2nd? 3rd?
-    //public int noticed_lag = 0;        //  0 false, 1 true
     public List<ExtraRecordItem> survey_questions = new List<ExtraRecordItem> ();   // Noticed lag, competence, internal external, etc
 
     public virtual new string ToString()
     {
-        return trial_id + "," + participant_id + "," + round_number + "," + practice_round + "," + num_rounds_since_survey + "," + ms_input_lag_of_round + "," + round_time_taken;
+        return end_date.ToString() + "," + trial_id + "," + participant_id + "," + round_number + "," + practice_round + "," + num_rounds_since_survey + "," + ms_input_lag_of_round + "," + round_time_taken;
     }
     public virtual string ExtrasToString()
     {
@@ -34,7 +34,7 @@ public class Round_Record
 
     public virtual string FieldNames()
     {
-        return "trial_id,participant_id,round_number,practice_round,num_rounds_since_survey,input_lag,time_for_round";
+        return "round_end_date,trial_id,participant_id,round_number,practice_round,num_rounds_since_survey,input_lag,time_for_round";
     }
     public virtual string ExtrasFieldNames()
     {
@@ -236,6 +236,7 @@ public class Trial : MonoBehaviour
     // Record anything we need to before resetting
     public virtual void FinishRound()
     {
+        round_results[current_round].end_date = DateTime.Now;
         round_results[current_round].round_time_taken = time_for_current_round;
         round_results[current_round].round_number = current_round + 1;
         round_results[current_round].trial_id = trial_id;
