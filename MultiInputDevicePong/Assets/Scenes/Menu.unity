@@ -1488,7 +1488,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: 1. Mouse -> Drawing Tablet -> Touchscreen
       m_Image: {fileID: 0}
-    - m_Text: 2. Touchscren -> Mouse -> Drawing Tablet
+    - m_Text: 2. Touchscreen -> Mouse -> Drawing Tablet
       m_Image: {fileID: 0}
     - m_Text: 3. Drawing Tablet -> Touchscreen -> Mouse
       m_Image: {fileID: 0}
@@ -2136,7 +2136,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 12
+    m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1

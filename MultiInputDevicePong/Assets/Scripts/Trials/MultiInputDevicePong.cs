@@ -34,7 +34,7 @@ public class MultiInputDevicePongRecord : Round_Record
 
     public float total_bounces_per_miss, unskilled_bounces_per_miss, skilled_bounces_per_miss;      // bounces / misses
     public float percent_bounces_missed;        // Having a high percentage is bad. 100% means all were missed. 50% means half were missed
-    public float percent_skilled_bounces_missed;    // total_misses / skiled_bounces + total_misses. Having a high percentage is bad. 100% means were missed. 60% means 3/5ths were missed
+    public float percent_skilled_bounces_missed;    // total_misses / (skiled_bounces + total_misses). Having a high percentage is bad. 100% means all were missed. 60% means 3/5ths were missed
     public float paddle_width, ball_radius, ball_speed, distance_between_players;
     public float min_ball_tat;  // Ball turn around time; how much time the player has to move before the ball reaches one end. distance (-radius/2) / ball_speed
                                 // SHORTEST POSSIBLE TIME IS A STRAIGHT LINE. Most shots won't be a straight line, so they will have ever so slightly longer to react (+0.01/0.02ms)
