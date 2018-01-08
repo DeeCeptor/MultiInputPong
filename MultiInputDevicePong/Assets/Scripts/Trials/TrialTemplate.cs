@@ -23,6 +23,13 @@ public class TrialTemplate : Trial
     }
 
 
+    // Save any extra records
+    public override void FinishRound()
+    {
+        base.FinishRound();
+    }
+
+
     public override void FinishTrial()
     {
         base.FinishTrial();

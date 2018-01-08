@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiInputDevice Pong.unity
     guid: 7ec60ef0f74eab043a0217d73cca37fc
+  - enabled: 1
+    path: Assets/Scenes/SingleBlock.unity
+    guid: 3c68f2f261866604c817f91941d2dc29
   - enabled: 0
     path: Assets/Scenes/InputDelay/KickStationaryBall.unity
     guid: 55db307debfe42941828673db5d81b55
