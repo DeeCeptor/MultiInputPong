@@ -31,6 +31,7 @@ public class ScoreManager : MonoBehaviour
     public GameObject ball_prefab;
 
     public static bool debug_view = false;
+    public bool send_score_messages = true;
 
 
     void Awake () 
@@ -101,14 +102,16 @@ public class ScoreManager : MonoBehaviour
     public void BlueScored(int amount)
     {
         blue_score += amount;
-        Debug.Log("Blue scored " + amount);
-        SendMessage("GoalScored", this.transform.name);
+        //Debug.Log("Blue scored " + amount);
+        if (send_score_messages)
+            SendMessage("GoalScored", this.transform.name);
     }
     public void RedScored(int amount)
     {
         red_score += amount;
-        Debug.Log("Red scored " + amount);
-        SendMessage("GoalScored", this.transform.name);
+        //Debug.Log("Red scored " + amount);
+        if (send_score_messages)
+            SendMessage("GoalScored", this.transform.name);
     }
 
 

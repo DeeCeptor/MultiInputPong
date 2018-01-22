@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
             HitInvader(collision.gameObject);
         else if (collision.gameObject.tag == "Player")
             HitPlayer(collision.gameObject);
-        else if (collision.gameObject.tag == "Default")
+        else if (collision.gameObject.tag == "Wall")
             DestroyThisBullet();
     }
 
@@ -32,18 +32,22 @@ public class Bullet : MonoBehaviour
 
         Destroy(invader);
 
+        // Record this!
+        ScoreManager.score_manager.BlueScored(1);
+
         DestroyThisBullet();
     }
 
     public void HitPlayer(GameObject player)
     {
         // Destroy player
+        player.GetComponent<PlayerSpaceInvaders>().GotHit(this);
 
         DestroyThisBullet();
     }
 
     public void DestroyThisBullet()
     {
-        Destroy(this.gameObject);
+        BulletPooler.DespawnThisBullet(this.gameObject);
     }
 }

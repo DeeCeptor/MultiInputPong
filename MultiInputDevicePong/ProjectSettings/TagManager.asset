@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Invader
   - Bullet
+  - Player Bullet
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Net
   - Player Bullet
   - Enemy Bullet
-  - 
+  - Enemy
   - 
   - 
   - 
