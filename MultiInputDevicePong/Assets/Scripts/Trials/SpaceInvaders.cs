@@ -7,6 +7,7 @@ using UnityEngine;
 public class SpaceInvadersRecord : Round_Record
 {
     /**
+     *  Error rate, accuracy, completion time (stored in base round_record)
      * 	Accuracy: Number of invaders
 	Num invaders killed
 	Time (in seconds from start) of each kill
@@ -19,13 +20,19 @@ public class SpaceInvadersRecord : Round_Record
     public int num_invaders_hit;
     public List<float> time_of_invader_hit;   // Time since beginning of round
     public List<float> x_pos_of_invader_at_hit;
-    public int num_shots;               // How many bullets did rhe player fire?
-    public int num_finished_shots;      // How many bullets of the player hit an invader or a wall?
+    public List<float> x_pos_of_bullet_at_invader_hit;
+    public int num_player_shots;               // How many bullets did the player fire?
+    public int num_finished_shots;      // How many bullets of the player hit an invader or a wall? NOT RECORDED YET
 
     // Getting hit by invaders (Error rate)
-    public int num_errors;
-    public List<float> time_of_error;   // Time since beginning of round
-    public List<float> pos_of_error;
+    public int num_errors;              // Number of times player was hit by a bullet while not invulnerable
+    public List<float> time_of_error;   // The times (since start of round, in seconds) that the player got hit
+    public List<float> pos_of_player_at_error;      // Position of the player when hit
+    public List<float> pos_of_bullet_at_error;      // Position of bullet when the player is hit
+
+    // Number of bullets spawned at the top of the screen
+    public int num_enemy_bullets_fired;
+
 
     public override string ToString()
     {
@@ -142,6 +149,7 @@ public class SpaceInvaders : Trial
         base.Awake();
 
         space_invaders = this;
+        Debug.Log("awake");
     }
     public override void Start()
     {
@@ -164,6 +172,7 @@ public class SpaceInvaders : Trial
         new_bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -4f);
 
         cur_bullet_cooldown = bullet_cooldown;
+        current_round_record.num_enemy_bullets_fired++;
     }
 
 

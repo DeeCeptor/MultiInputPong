@@ -44,6 +44,8 @@ public class PlayerSpaceInvaders : MonoBehaviour
         // Record a bullet was shot
         GameObject new_bullet = BulletPooler.GetPlayerBullet(this.transform.position);
         new_bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 5, 0);
+
+        SpaceInvaders.space_invaders.current_round_record.num_player_shots++;
     }
 
 
