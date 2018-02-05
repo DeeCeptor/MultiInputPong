@@ -5,33 +5,69 @@ using UnityEngine;
 // Handles shooting bullets
 public class PlayerSpaceInvaders : MonoBehaviour
 {
+    public static PlayerSpaceInvaders player_invader;
     public GameObject bullets_to_use;
+    public Bullet previous_bullet = null;
+    public QueueMouseClicks mouse_click_input;
 
     float cur_cooldown;
     float shot_cooldown = 0.5f;
 
-	void Start () {
-		
-	}
+    float amount_of_invuln_time = 0.6f;
+    public float invuln_time_left = 0;
+    float prev_invuln_time_left = 0;
+    SpriteRenderer sprite;
+
+    void Awake ()
+    {
+        player_invader = this;
+        mouse_click_input = this.GetComponentInChildren<QueueMouseClicks>();
+        sprite = this.GetComponentInChildren<SpriteRenderer>();
+    }
 
 
     void Update ()
     {
         cur_cooldown -= Time.deltaTime;
 
-        //if (Input.GetKeyDown(KeyCode.Space))
-        if (Input.GetMouseButton(0) && cur_cooldown <= 0)
+        // Check if we should turn off invulnerability
+        prev_invuln_time_left = invuln_time_left;
+        invuln_time_left -= Time.deltaTime;
+        if (prev_invuln_time_left > 0 && invuln_time_left <= 0)
+            TurnOffInvulnerability();
+
+        // Player can only have 1 bullet on-screen at a time. Can fire again when that bullet is inactive
+        if (invuln_time_left <= 0f && mouse_click_input.cur_left_mouse_held_down && (previous_bullet == null || previous_bullet.shot_by_player == false) || (Input.GetMouseButton(1) && Application.isEditor))
             ShootBullet();
+    }
+
+
+    public void TurnOffInvulnerability()
+    {
+        invuln_time_left = 0;
+        prev_invuln_time_left = 0;
+        sprite.color = Color.white;
+    }
+    public void TurnOnInvulnerability()
+    {
+        invuln_time_left = amount_of_invuln_time;
+        prev_invuln_time_left = amount_of_invuln_time;
+        sprite.color = Color.yellow;
     }
 
 
     public void GotHit(Bullet bull)
     {
+        if (invuln_time_left > 0f)
+            return;
+
         Debug.Log("Hit player", this.gameObject);
 
-        // Turn on invulnerability
-
-        // Change animation
+        SpaceInvaders.space_invaders.current_round_record.num_errors++;
+        SpaceInvaders.space_invaders.current_round_record.time_of_error.Add(SpaceInvaders.space_invaders.time_for_current_round);
+        SpaceInvaders.space_invaders.current_round_record.pos_of_player_at_error.Add(this.transform.position.x);
+        SpaceInvaders.space_invaders.current_round_record.pos_of_bullet_at_error.Add(bull.transform.position.x);
+        TurnOnInvulnerability();
 
         // Make sound
     }
@@ -43,8 +79,7 @@ public class PlayerSpaceInvaders : MonoBehaviour
 
         // Record a bullet was shot
         GameObject new_bullet = BulletPooler.GetPlayerBullet(this.transform.position);
-        new_bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 5, 0);
-
+        previous_bullet = new_bullet.GetComponent<Bullet>();
         SpaceInvaders.space_invaders.current_round_record.num_player_shots++;
     }
 
@@ -88,6 +123,7 @@ public static class BulletPooler
             }
         }
 
+        inactive_bullet.GetComponent<Bullet>().time_of_creation = Time.time;
         return inactive_bullet;
     }
     public static GameObject GetPlayerBullet(Vector2 position)
@@ -95,9 +131,12 @@ public static class BulletPooler
         GameObject bullet = GetPooledBullet();
         bullet.transform.position = position;
         bullet.SetActive(true);
-        bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 5, 0);
+        // Use constant player bullet speed
+        bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 5f, 0);
+        //bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, SpaceInvaders.space_invaders.cur_bullet_speed, 0);
         bullet.GetComponent<SpriteRenderer>().color = Color.white;
         bullet.layer = LayerMask.NameToLayer("Player Bullet");
+        bullet.GetComponent<Bullet>().shot_by_player = true;
         return bullet;
     }
     public static GameObject GetEnemyBullet(Vector2 position)
@@ -105,7 +144,7 @@ public static class BulletPooler
         GameObject bullet = GetPooledBullet();
         bullet.transform.position = position;
         bullet.SetActive(true);
-        bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 5, 0);
+        bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, -SpaceInvaders.space_invaders.cur_bullet_speed, 0);
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
         bullet.layer = LayerMask.NameToLayer("Enemy Bullet");
         return bullet;
@@ -121,5 +160,6 @@ public static class BulletPooler
         {
             bull.SetActive(false);
         }
+        PlayerSpaceInvaders.player_invader.previous_bullet = null;
     }
 }

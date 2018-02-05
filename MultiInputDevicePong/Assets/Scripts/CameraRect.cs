@@ -22,7 +22,7 @@ public class CameraRect : MonoBehaviour
     void Awake () 
 	{
         cam = this.GetComponent<Camera>();
-
+        camera_settings = this;
         CalculateScreenDimensions();
     }
     private void Start()

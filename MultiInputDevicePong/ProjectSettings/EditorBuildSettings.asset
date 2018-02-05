@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 6f65c84e07ec78043abae4f141e69751
   - enabled: 1
+    path: Assets/Scenes/Space Invaders.unity
+    guid: 631610320fbd5e14d8cc726dea793ff1
+  - enabled: 1
     path: Assets/Scenes/MultiInputDevice Pong.unity
     guid: 7ec60ef0f74eab043a0217d73cca37fc
   - enabled: 1

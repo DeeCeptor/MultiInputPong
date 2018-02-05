@@ -18,29 +18,45 @@ public class SpaceInvadersRecord : Round_Record
      */
     // Hitting invaders (Accuracy)
     public int num_invaders_hit;
-    public List<float> time_of_invader_hit;   // Time since beginning of round
-    public List<float> x_pos_of_invader_at_hit;
-    public List<float> x_pos_of_bullet_at_invader_hit;
-    public int num_player_shots;               // How many bullets did the player fire?
-    public int num_finished_shots;      // How many bullets of the player hit an invader or a wall? NOT RECORDED YET
+    public int player_missed_shots;
+    public List<float> time_of_invader_hit = new List<float>();   // Time since beginning of round
+    public List<float> x_pos_of_invader_at_hit = new List<float>();     // Position of invader ENEMY at time they are hit
+    public List<float> x_pos_of_bullet_at_invader_hit = new List<float>();  // X position of the bullet that killed the invader on hit
+    public int num_finished_shots;      // How many bullets of the player hit an invader or a wall?
+    public int num_player_shots;        // How many bullets did the player fire?
 
     // Getting hit by invaders (Error rate)
     public int num_errors;              // Number of times player was hit by a bullet while not invulnerable
-    public List<float> time_of_error;   // The times (since start of round, in seconds) that the player got hit
-    public List<float> pos_of_player_at_error;      // Position of the player when hit
-    public List<float> pos_of_bullet_at_error;      // Position of bullet when the player is hit
+    public List<float> time_of_error = new List<float>();   // The times (since start of round, in seconds) that the player got hit
+    public List<float> pos_of_player_at_error = new List<float>();      // Position of the player when hit
+    public List<float> pos_of_bullet_at_error = new List<float>();      // Position of bullet when the player is hit
 
     // Number of bullets spawned at the top of the screen
+    public float time_to_react_from_enemy_bullets;
+    public float bullet_speed;
     public int num_enemy_bullets_fired;
+    public float enemy_bullets_fired_per_second_rate;   // Number of bullets fired 
+
+
 
 
     public override string ToString()
     {
-        return base.ToString() + ",";
+        return base.ToString() 
+            + "," + time_to_react_from_enemy_bullets + "," + num_invaders_hit + "," + Round_Record.ListToString<float>(time_of_invader_hit) + "," + player_missed_shots
+            + "," + Round_Record.ListToString<float>(x_pos_of_invader_at_hit) + "," + Round_Record.ListToString<float>(x_pos_of_bullet_at_invader_hit)
+            + "," + num_player_shots + "," + num_finished_shots
+            + "," + num_errors + "," + Round_Record.ListToString<float>(time_of_error) + "," + Round_Record.ListToString<float>(pos_of_player_at_error) + "," + Round_Record.ListToString<float>(pos_of_bullet_at_error)
+            + "," + num_enemy_bullets_fired + "," + enemy_bullets_fired_per_second_rate + "," + bullet_speed;
     }
     public override string FieldNames()
     {
-        return base.FieldNames() + ",";
+        return base.FieldNames() +
+            ",time_to_react_from_enemy_bullet,num_invaders_hit,time_of_invader_hit,player_missed_shots," +
+            "x_pos_of_invader_at_hit,x_pos_of_bullet_at_invader_hit," +
+            "num_player_shots,num_finished_shots," +
+            "num_errors,time_of_error,pos_of_player_at_error,pos_of_bullet_at_error," +
+            "num_enemy_bullets_fired,enemy_bullets_fired_per_second_rate,bullet_speed";
     }
 }
 
@@ -63,7 +79,9 @@ public class SpaceInvaders : Trial
     float leftmost_x;
     float rightmost_x;
     float top_y;
-    float bullet_cooldown = 0.2f;
+    public List<float> enemy_bullet_travel_times = new List<float>();
+    public float cur_bullet_speed = 5f;
+    float bullet_cooldown = 0.4f;
     float cur_bullet_cooldown;
 
 
@@ -77,20 +95,18 @@ public class SpaceInvaders : Trial
         if (settings == null)
             return;
 
-        /*
-        ball_speeds.Clear();
+
+        enemy_bullet_travel_times.Clear();
+
         string[] splits = { "\n" };
         string[] str_vals = settings.text.Split(splits, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string s in str_vals)
         {
-            // Ball speed, distance between players
-            string[] items = s.Split(',');
-            ball_speeds.Add(float.Parse(items[0]));
-            distances_between_players.Add(float.Parse(items[1]));
+            enemy_bullet_travel_times.Add(float.Parse(s));
         }
-        */
-    Debug.Log("Done loading settings", this.gameObject);
+        
+        Debug.Log("Done loading settings", this.gameObject);
     }
 
 
@@ -100,8 +116,10 @@ public class SpaceInvaders : Trial
         current_enemy_parent = Instantiate(enemies_to_spawn, position_to_spawn_enemies.transform.position, Quaternion.identity);
 
         // Reset player position
+        PlayerSpaceInvaders.player_invader.TurnOffInvulnerability();
 
         // Reset scores
+        ScoreManager.score_manager.ResetScore();
 
         base.StartRound();
 
@@ -109,8 +127,20 @@ public class SpaceInvaders : Trial
         round_results.Add(current_round_record);
         current_round_record.participant_id = "" + GlobalSettings.GetParticipantId(0);
         current_round_record.ms_input_lag_of_round = input_delay_per_round[current_round];
+        current_round_record.enemy_bullets_fired_per_second_rate = bullet_cooldown;
 
         // Set current round features
+        // Set speed of bullet to setting found in file
+        // movement_speed = Distance_to_travel / time_taken;
+        current_round_record.time_to_react_from_enemy_bullets = enemy_bullet_travel_times[current_round];
+        cur_bullet_speed = (CameraRect.camera_settings.topright.transform.position.y - PlayerSpaceInvaders.player_invader.transform.position.y) / enemy_bullet_travel_times[current_round];
+        current_round_record.bullet_speed = cur_bullet_speed;
+        /*
+        time_taken = Distance_to_travel / movement_speed;
+        time_taken * movement_speed  = Distance_to_travel;
+        
+        */
+
     }
 
 
@@ -140,6 +170,8 @@ public class SpaceInvaders : Trial
 
     public override void FinishTrial()
     {
+        CreateTextFile();
+        
         base.FinishTrial();
     }
 
@@ -149,7 +181,6 @@ public class SpaceInvaders : Trial
         base.Awake();
 
         space_invaders = this;
-        Debug.Log("awake");
     }
     public override void Start()
     {
@@ -167,9 +198,6 @@ public class SpaceInvaders : Trial
         // Spawn bullets at top of screen in random positions
         Vector2 new_bullet_pos = new Vector2(UnityEngine.Random.Range(leftmost_x, rightmost_x), top_y - 0.5f);
         GameObject new_bullet = BulletPooler.GetEnemyBullet(new_bullet_pos); ;
-
-        // Give downwards direction
-        new_bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(0, -4f);
 
         cur_bullet_cooldown = bullet_cooldown;
         current_round_record.num_enemy_bullets_fired++;

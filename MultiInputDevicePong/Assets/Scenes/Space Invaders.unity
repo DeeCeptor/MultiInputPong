@@ -1267,6 +1267,7 @@ GameObject:
   - component: {fileID: 379369208}
   - component: {fileID: 379369207}
   - component: {fileID: 379369206}
+  - component: {fileID: 379369209}
   m_Layer: 0
   m_Name: ScoreManager
   m_TagString: Untagged
@@ -1329,17 +1330,17 @@ MonoBehaviour:
   trial_id: 0
   number_players_required: 1
   current_round: -1
-  total_rounds: 10
+  total_rounds: 15
   time_for_current_round: 0
   total_time_for_trial: 0
   dont_check_player_count: 1
   trial_running: 0
   round_running: 0
   enforce_time_limit: 1
-  time_limit: 20
-  half_time_for_practice_rounds: 0
+  time_limit: 15
+  half_time_for_practice_rounds: 1
   survey_objects_to_activate: []
-  input_delay_values: {fileID: 0}
+  input_delay_values: {fileID: 4900000, guid: d1772117d44d8644eb10612f815e0727, type: 3}
   input_delay_per_round: 
   practice_rounds: 
   survey_rounds: 
@@ -1350,7 +1351,7 @@ MonoBehaviour:
   round_timer: {fileID: 1092053278}
   practice_round_text: {fileID: 177910849}
   to_menu_after_trial: 1
-  settings: {fileID: 0}
+  settings: {fileID: 4900000, guid: 181af936942b503428287b4b356831e7, type: 3}
   camera_rect: {fileID: 0}
   position_to_spawn_enemies: {fileID: 1453924742}
   enemies_to_spawn: {fileID: 1636955898556962, guid: 95278a10d96b67f4daa1405d1ec9656e,
@@ -1359,6 +1360,8 @@ MonoBehaviour:
   bullet_parent: {fileID: 218968086}
   enemy_bullet_prefab: {fileID: 1362735002478542, guid: 992a41fa0ca710d4da1dbc2340a1d2b5,
     type: 2}
+  enemy_bullet_travel_times: []
+  cur_bullet_speed: 0
 --- !u!114 &379369208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1409,6 +1412,20 @@ MonoBehaviour:
   drawing_tablet_UI_screen: {fileID: 747677499}
   touchscreen_UI_screen: {fileID: 851362800}
   survey_canvas: {fileID: 91361631}
+--- !u!114 &379369209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 379369204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae1166341647e7e4d9fff560b8466dd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  object_to_activate: {fileID: 776494920}
+  acivate_on_start: 1
+  activate_after_x_seconds: 0
 --- !u!1001 &419498107
 Prefab:
   m_ObjectHideFlags: 0
@@ -2683,6 +2700,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullets_to_use: {fileID: 0}
+  previous_bullet: {fileID: 0}
+  mouse_click_input: {fileID: 0}
+  invuln_time_left: 0
+--- !u!114 &776494922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 776494920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5473ac73c75cc440b75b05089bf5a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cur_left_mouse_held_down: 0
 --- !u!1 &787994204
 GameObject:
   m_ObjectHideFlags: 0
@@ -3607,25 +3639,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1092053275}
---- !u!1 &1223989366 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1714730199487676, guid: be15592e614c3cc419e42dc1db2538ac,
-    type: 2}
-  m_PrefabInternal: {fileID: 419498107}
---- !u!114 &1223989373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1223989366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae1166341647e7e4d9fff560b8466dd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  object_to_activate: {fileID: 776494920}
-  acivate_on_start: 1
-  activate_after_x_seconds: 0
 --- !u!1 &1239990912
 GameObject:
   m_ObjectHideFlags: 0
@@ -3710,7 +3723,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1241637946
 MonoBehaviour:
   m_ObjectHideFlags: 0
