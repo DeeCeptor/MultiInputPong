@@ -18,11 +18,15 @@ public class PlayerSpaceInvaders : MonoBehaviour
     float prev_invuln_time_left = 0;
     SpriteRenderer sprite;
 
+    AudioSource hit_noise;
+
+
     void Awake ()
     {
         player_invader = this;
         mouse_click_input = this.GetComponentInChildren<QueueMouseClicks>();
         sprite = this.GetComponentInChildren<SpriteRenderer>();
+        hit_noise = this.GetComponent<AudioSource>();
     }
 
 
@@ -62,7 +66,7 @@ public class PlayerSpaceInvaders : MonoBehaviour
             return;
 
         Debug.Log("Hit player", this.gameObject);
-
+        hit_noise.Play();
         SpaceInvaders.space_invaders.current_round_record.num_errors++;
         SpaceInvaders.space_invaders.current_round_record.time_of_error.Add(SpaceInvaders.space_invaders.time_for_current_round);
         SpaceInvaders.space_invaders.current_round_record.pos_of_player_at_error.Add(this.transform.position.x);

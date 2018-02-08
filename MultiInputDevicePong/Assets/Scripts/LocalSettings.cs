@@ -31,6 +31,7 @@ public static class GlobalSettings
                 }
             }
             input_delay = value;
+            Debug.Log("Current local latency (ms): " + input_delay);
         }
     } 
     private static int input_delay = 0;

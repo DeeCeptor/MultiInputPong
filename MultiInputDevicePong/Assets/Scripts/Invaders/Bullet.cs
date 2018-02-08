@@ -13,11 +13,6 @@ public class Bullet : MonoBehaviour
 	}
 
 
-    void Update () {
-		
-	}
-
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Invader")
@@ -48,6 +43,8 @@ public class Bullet : MonoBehaviour
     {
         // Destroy player
         player.GetComponent<PlayerSpaceInvaders>().GotHit(this);
+        float lifespan = Time.time - time_of_creation;
+        Debug.Log("Lifespan " + lifespan);
 
         DestroyThisBullet();
     }

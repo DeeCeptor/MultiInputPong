@@ -81,8 +81,10 @@ public class SpaceInvaders : Trial
     float top_y;
     public List<float> enemy_bullet_travel_times = new List<float>();
     public float cur_bullet_speed = 5f;
-    float bullet_cooldown = 0.4f;
+    float bullet_cooldown = 0.2f;   // This amount of seconds between each bullet spawn
     float cur_bullet_cooldown;
+
+    float offset_from_top_of_screen = 0.15f;
 
 
     public override void StartTrial()
@@ -133,7 +135,9 @@ public class SpaceInvaders : Trial
         // Set speed of bullet to setting found in file
         // movement_speed = Distance_to_travel / time_taken;
         current_round_record.time_to_react_from_enemy_bullets = enemy_bullet_travel_times[current_round];
-        cur_bullet_speed = (CameraRect.camera_settings.topright.transform.position.y - PlayerSpaceInvaders.player_invader.transform.position.y) / enemy_bullet_travel_times[current_round];
+        float distance_to_travel = CameraRect.camera_settings.topright.transform.position.y - PlayerSpaceInvaders.player_invader.transform.position.y - offset_from_top_of_screen;
+        cur_bullet_speed = (distance_to_travel) / enemy_bullet_travel_times[current_round];
+        Debug.Log("cur_bullet_speed " + cur_bullet_speed + " distance_to_travel " + distance_to_travel + " cur bull travel time " + enemy_bullet_travel_times[current_round]);
         current_round_record.bullet_speed = cur_bullet_speed;
         /*
         time_taken = Distance_to_travel / movement_speed;
@@ -196,7 +200,7 @@ public class SpaceInvaders : Trial
     public void CreateEnemyBullet()
     {
         // Spawn bullets at top of screen in random positions
-        Vector2 new_bullet_pos = new Vector2(UnityEngine.Random.Range(leftmost_x, rightmost_x), top_y - 0.5f);
+        Vector2 new_bullet_pos = new Vector2(UnityEngine.Random.Range(leftmost_x, rightmost_x), top_y - offset_from_top_of_screen);
         GameObject new_bullet = BulletPooler.GetEnemyBullet(new_bullet_pos); ;
 
         cur_bullet_cooldown = bullet_cooldown;
