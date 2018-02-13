@@ -44,7 +44,6 @@ public class MultiInputDevicePongRecord : Round_Record
     public float avg_time_needed_on_unskilled_miss;   // When a ball is missed (and score), this is the average amount of time the player had to react
     public List<float> time_needed_on_all_misses = new List<float>();      // Records how much time they had on each miss
     public float avg_time_needed_on_all_miss;   // When a ball is missed (and score), this is the average amount of time the player had to react
-    public float total_screen_width;
     public float paddle_takes_percent_of_screen;
 
 
@@ -64,7 +63,7 @@ public class MultiInputDevicePongRecord : Round_Record
             + "," + Round_Record.ListToString<float>(time_needed_on_unskilled_misses) + "," + avg_time_needed_on_unskilled_miss
             + "," + Round_Record.ListToString<float>(time_needed_on_all_misses) + "," + avg_time_needed_on_all_miss
             + "," + min_ball_tat + "," + paddle_width + "," + ball_radius + "," + ball_speed + "," + distance_between_players
-            + "," + total_screen_width + "," + paddle_takes_percent_of_screen;
+            + "," + paddle_takes_percent_of_screen;
     }
     public override string FieldNames()
     {
@@ -82,7 +81,7 @@ public class MultiInputDevicePongRecord : Round_Record
             + ",time_needed_on_unskilled_misses,avg_time_needed_on_unskilled_misses"
             + ",time_needed_on_all_misses,avg_time_needed_on_all_misses"
             + ",min_ball_tat,paddle_width,ball_radius,ball_speed,distance_between_players"
-            + ",total_screen_width, paddle_takes_percent_of_screen";
+            + ", paddle_takes_percent_of_screen";
     }
 }
 
@@ -238,7 +237,6 @@ public class MultiInputDevicePong : Trial
         // Maybe don't need radius * 2 if we only care when the ball's center position passes the paddle
         float total_distance_needed = current_round_record.distance_between_players;// - (current_round_record.ball_radius * 2);
         current_round_record.min_ball_tat = total_distance_needed / current_ball_speed_of_round;
-        current_round_record.total_screen_width = CameraRect.camWidth;
         current_round_record.paddle_takes_percent_of_screen = current_round_record.paddle_width / current_round_record.total_screen_width;
 
         player_net.transform.position = ScoreManager.score_manager.players[0].transform.position;

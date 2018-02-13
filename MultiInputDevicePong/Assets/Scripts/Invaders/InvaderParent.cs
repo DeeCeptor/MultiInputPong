@@ -10,6 +10,7 @@ public class InvaderParent : MonoBehaviour
     public Vector3 start_position;
     CameraRect camera_rect;
     int initial_child_count;
+    public bool end_round_when_children_dead = true;
 
 
 	void Awake ()
@@ -27,7 +28,7 @@ public class InvaderParent : MonoBehaviour
     float age;
     void Update ()
     {
-		if (this.transform.childCount <= 0)
+		if (end_round_when_children_dead && this.transform.childCount <= 0)
         {
             AllInvadersDefeated();
         }

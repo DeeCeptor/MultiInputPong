@@ -16,10 +16,13 @@ public class Round_Record
     public int practice_round = 0;     //  0 false: not a practice round, 1 true: is a practice round
     public int num_rounds_since_survey;      // Is this the 1st round after a survey? The 2nd? 3rd?
     public List<ExtraRecordItem> survey_questions = new List<ExtraRecordItem> ();   // Noticed lag, competence, internal external, etc
+    public float total_screen_width, total_screen_height;
 
     public virtual new string ToString()
     {
-        return end_date.ToString() + "," + trial_id + "," + participant_id + "," + round_number + "," + practice_round + "," + num_rounds_since_survey + "," + ms_input_lag_of_round + "," + round_time_taken;
+        return end_date.ToString() + "," + trial_id + "," + participant_id + "," + round_number 
+            + "," + practice_round + "," + num_rounds_since_survey + "," + ms_input_lag_of_round 
+            + "," + round_time_taken + "," + total_screen_width + "," + total_screen_height;
     }
     public virtual string ExtrasToString()
     {
@@ -34,7 +37,9 @@ public class Round_Record
 
     public virtual string FieldNames()
     {
-        return "round_end_date,trial_id,participant_id,round_number,practice_round,num_rounds_since_survey,input_lag,time_for_round";
+        return "round_end_date,trial_id,participant_id,round_number" +
+            ",practice_round,num_rounds_since_survey,input_lag," +
+            "time_for_round, total_screen_width,total_screen_height";
     }
     public virtual string ExtrasFieldNames()
     {
@@ -243,6 +248,13 @@ public class Trial : MonoBehaviour
         rounds_since_survey++;
         round_results[current_round].num_rounds_since_survey = rounds_since_survey;
         round_results[current_round].practice_round = IsCurrentRoundRoundPractice() ? 1 : 0;
+
+        Camera cam = Camera.main;
+        float height = 2f * cam.orthographicSize;
+        float width = height * cam.aspect;
+        round_results[current_round].total_screen_width = width;
+        round_results[current_round].total_screen_height = height;
+
 
         // Should we bring up the survey window?
         if (survey_rounds[current_round])

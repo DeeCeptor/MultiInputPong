@@ -20,6 +20,9 @@ public class PlayerSpaceInvaders : MonoBehaviour
 
     AudioSource hit_noise;
 
+    public float player_bullet_speed = 7f;
+
+
 
     void Awake ()
     {
@@ -83,6 +86,7 @@ public class PlayerSpaceInvaders : MonoBehaviour
 
         // Record a bullet was shot
         GameObject new_bullet = BulletPooler.GetPlayerBullet(this.transform.position);
+        new_bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(0, player_bullet_speed);
         previous_bullet = new_bullet.GetComponent<Bullet>();
         SpaceInvaders.space_invaders.current_round_record.num_player_shots++;
     }
@@ -97,8 +101,9 @@ public static class BulletPooler
 {
     public static List<GameObject> all_bullets = new List<GameObject>();
 
-
     static int num_pooled_bullets = 100;
+    public static int num_active_enemy_bullets = 0;
+
 
     public static void PopulateBulletPool()
     {
@@ -136,7 +141,6 @@ public static class BulletPooler
         bullet.transform.position = position;
         bullet.SetActive(true);
         // Use constant player bullet speed
-        bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 5f, 0);
         //bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, SpaceInvaders.space_invaders.cur_bullet_speed, 0);
         bullet.GetComponent<SpriteRenderer>().color = Color.white;
         bullet.layer = LayerMask.NameToLayer("Player Bullet");
@@ -151,11 +155,15 @@ public static class BulletPooler
         bullet.GetComponent<Rigidbody2D>().velocity = new Vector3(0, -SpaceInvaders.space_invaders.cur_bullet_speed, 0);
         bullet.GetComponent<SpriteRenderer>().color = Color.red;
         bullet.layer = LayerMask.NameToLayer("Enemy Bullet");
+        num_active_enemy_bullets++;
         return bullet;
     }
 
     public static void DespawnThisBullet(GameObject bullet)
     {
+        if (bullet.layer == LayerMask.NameToLayer("Enemy Bullet"))
+            num_active_enemy_bullets--;
+
         bullet.SetActive(false);
     }
     public static void DespawnAllBullets()
@@ -165,5 +173,6 @@ public static class BulletPooler
             bull.SetActive(false);
         }
         PlayerSpaceInvaders.player_invader.previous_bullet = null;
+        num_active_enemy_bullets = 0;
     }
 }

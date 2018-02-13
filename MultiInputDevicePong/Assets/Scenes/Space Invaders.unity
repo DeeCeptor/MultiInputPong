@@ -1383,7 +1383,7 @@ MonoBehaviour:
   trial_running: 0
   round_running: 0
   enforce_time_limit: 1
-  time_limit: 120
+  time_limit: 15
   half_time_for_practice_rounds: 1
   survey_objects_to_activate:
   - {fileID: 91361631}

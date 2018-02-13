@@ -44,7 +44,7 @@ public class Bullet : MonoBehaviour
         // Destroy player
         player.GetComponent<PlayerSpaceInvaders>().GotHit(this);
         float lifespan = Time.time - time_of_creation;
-        Debug.Log("Lifespan " + lifespan);
+        Debug.Log("Lifespan of bullet: " + lifespan + " seconds");
 
         DestroyThisBullet();
     }
