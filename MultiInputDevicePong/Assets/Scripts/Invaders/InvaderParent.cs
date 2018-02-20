@@ -12,12 +12,15 @@ public class InvaderParent : MonoBehaviour
     int initial_child_count;
     public bool end_round_when_children_dead = true;
 
+    public AudioSource point_sound;
+
 
 	void Awake ()
     {
         invader_parent = this;
         start_position = this.transform.position;
         initial_child_count = this.transform.childCount;
+        point_sound = this.GetComponent<AudioSource>();
     }
     private void Start()
     {

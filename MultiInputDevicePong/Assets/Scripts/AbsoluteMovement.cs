@@ -32,6 +32,8 @@ public class AbsoluteMovement : MonoBehaviour
 
     public bool adjust_sensitivity = false;
 
+    float halved_player_width = 0;
+
 
     void Awake () 
 	{
@@ -39,6 +41,11 @@ public class AbsoluteMovement : MonoBehaviour
         physics = this.GetComponent<Rigidbody2D>();
         kick_sound = this.GetComponent<AudioSource>();
 
+        EdgeCollider2D collider = this.GetComponent<EdgeCollider2D>();
+        if (collider != null)
+        {
+            halved_player_width = this.transform.localScale.x / 2f;
+        }
         /*
         if (allow_x_movement && !allow_y_movement)
             physics.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -113,8 +120,10 @@ public class AbsoluteMovement : MonoBehaviour
         
         // Keep the player within view of the screen
         potential_position = new Vector2(
-            Mathf.Clamp(potential_position.x, CameraRect.arena_rect.xMin, CameraRect.arena_rect.xMax),
-            Mathf.Clamp(potential_position.y, CameraRect.arena_rect.yMin, CameraRect.arena_rect.yMax));
+            Mathf.Clamp(potential_position.x, CameraRect.arena_rect.xMin + halved_player_width, 
+                CameraRect.arena_rect.xMax - halved_player_width),
+            Mathf.Clamp(potential_position.y, CameraRect.arena_rect.yMin + halved_player_width, 
+                CameraRect.arena_rect.yMax - halved_player_width));
 
         // Add force to move us where we should be
         //physics.AddForce(potential_position);

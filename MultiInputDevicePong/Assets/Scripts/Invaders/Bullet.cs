@@ -23,6 +23,7 @@ public class Bullet : MonoBehaviour
             HitWall();
     }
 
+
     public void HitInvader(GameObject invader)
     {
         // Record some stuff
@@ -30,6 +31,7 @@ public class Bullet : MonoBehaviour
         SpaceInvaders.space_invaders.current_round_record.time_of_invader_hit.Add(SpaceInvaders.space_invaders.time_for_current_round);
         SpaceInvaders.space_invaders.current_round_record.x_pos_of_invader_at_hit.Add(invader.transform.position.x);
         SpaceInvaders.space_invaders.current_round_record.x_pos_of_bullet_at_invader_hit.Add(this.transform.position.x);
+        InvaderParent.invader_parent.point_sound.Play();
 
         Destroy(invader);
 

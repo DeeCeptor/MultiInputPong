@@ -1264,8 +1264,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 379369205}
-  - component: {fileID: 379369208}
   - component: {fileID: 379369207}
+  - component: {fileID: 379369208}
   - component: {fileID: 379369206}
   - component: {fileID: 379369209}
   m_Layer: 0
@@ -1330,14 +1330,14 @@ MonoBehaviour:
   trial_id: 0
   number_players_required: 1
   current_round: -1
-  total_rounds: 15
+  total_rounds: 24
   time_for_current_round: 0
   total_time_for_trial: 0
   dont_check_player_count: 1
   trial_running: 0
   round_running: 0
   enforce_time_limit: 1
-  time_limit: 15
+  time_limit: 45
   half_time_for_practice_rounds: 1
   survey_objects_to_activate: []
   input_delay_values: {fileID: 4900000, guid: d1772117d44d8644eb10612f815e0727, type: 3}
@@ -1362,6 +1362,7 @@ MonoBehaviour:
     type: 2}
   enemy_bullet_travel_times: []
   cur_bullet_speed: 0
+  bullet_cooldown: 0.15
 --- !u!114 &379369208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2300,6 +2301,21 @@ Prefab:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 96ba409c5b1751e4e8c2fea88aef2966, type: 3}
+    - target: {fileID: 50472056433882480, guid: f7febc937c9e9394da7aa284a80e4c0d,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114614159679954324, guid: f7febc937c9e9394da7aa284a80e4c0d,
+        type: 2}
+      propertyPath: allow_y_movement
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114614159679954324, guid: f7febc937c9e9394da7aa284a80e4c0d,
+        type: 2}
+      propertyPath: allow_x_movement
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f7febc937c9e9394da7aa284a80e4c0d, type: 2}
   m_IsPrefabParent: 0
@@ -2726,6 +2742,7 @@ MonoBehaviour:
   previous_bullet: {fileID: 0}
   mouse_click_input: {fileID: 0}
   invuln_time_left: 0
+  player_bullet_speed: 7
 --- !u!114 &776494922
 MonoBehaviour:
   m_ObjectHideFlags: 0

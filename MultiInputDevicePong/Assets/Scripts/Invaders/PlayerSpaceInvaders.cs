@@ -65,18 +65,14 @@ public class PlayerSpaceInvaders : MonoBehaviour
 
     public void GotHit(Bullet bull)
     {
-        if (invuln_time_left > 0f)
-            return;
-
         Debug.Log("Hit player", this.gameObject);
         hit_noise.Play();
+        ScoreManager.score_manager.BlueScored(-1);
         SpaceInvaders.space_invaders.current_round_record.num_errors++;
         SpaceInvaders.space_invaders.current_round_record.time_of_error.Add(SpaceInvaders.space_invaders.time_for_current_round);
         SpaceInvaders.space_invaders.current_round_record.pos_of_player_at_error.Add(this.transform.position.x);
         SpaceInvaders.space_invaders.current_round_record.pos_of_bullet_at_error.Add(bull.transform.position.x);
         TurnOnInvulnerability();
-
-        // Make sound
     }
 
 
