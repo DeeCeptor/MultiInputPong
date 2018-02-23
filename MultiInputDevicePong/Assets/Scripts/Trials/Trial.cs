@@ -81,6 +81,7 @@ public class Trial : MonoBehaviour
 {
     public static Trial trial;
 
+    public List<GameObject> destroy_when_trial_starts = new List<GameObject>();
     public List<Round_Record> round_results = new List<Round_Record>();
 
     public int trial_id = 0;    // What task are we doing? Stationary kick into net is 1, moving kick into net is 2, etc
@@ -169,6 +170,11 @@ public class Trial : MonoBehaviour
     {
         UnityEngine.Random.InitState(999);
 
+        foreach (GameObject obj in destroy_when_trial_starts)
+        {
+            Destroy(obj);
+        }
+
         ResetTrial();
         if (MultiMouseManager.mouse_manager != null)
             MultiMouseManager.mouse_manager.players_can_join = false;
@@ -193,7 +199,7 @@ public class Trial : MonoBehaviour
         if (practice_round_text != null)
             practice_round_text.gameObject.SetActive(IsCurrentRoundRoundPractice());
 
-        if (IsCurrentRoundRoundPractice() && half_time_for_practice_rounds)
+        if (IsCurrentRoundRoundPractice() && half_time_for_practice_rounds && current_round != 0)
         {
             time_limit = default_time_limit / 2f;
         }

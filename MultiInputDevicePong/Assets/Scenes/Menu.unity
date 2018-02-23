@@ -2226,20 +2226,20 @@ MonoBehaviour:
     SPACEBAR to start trial (after participant is ready)
 
 
-    To control your paddle...
-
-    MOUSE:
+    To control the player:
 
     Move the mouse left and right
 
-    DRAWING TABLET:
+    Left click or HOLD down the left mouse button to shoot
 
-    Hold the pen, and hold the pen close the to the surface or drag ON the surface
-    left & right
 
-    TOUCHSCREEN:
+    Goals:
 
-    Press your finger on your screen, dragging left and iright'
+    Dodge incoming red bullets
+
+    WHILE
+
+    shooting enemies at the top of the screen'
 --- !u!222 &705703522
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -188,6 +188,7 @@ public class SpaceInvaders : Trial
 
         // Number of enemy bullets spawned per second * chance of randomly hitting player (paddle width of screen + bullet width)
         // Also doesn't take into account height of bullet, as they hit you slightly sooner
+        // Should discount the first second, as bullets haven't reached the player yet
         float bullet_takes_percent_of_width_of_screen = 
             (enemy_bullet_prefab.transform.localScale.x * enemy_bullet_prefab.GetComponent<BoxCollider2D>().size.x)
             / current_round_record.total_screen_width;

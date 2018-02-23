@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
         else if (collision.gameObject.tag == "Player")
             HitPlayer(collision.gameObject);
         else if (collision.gameObject.tag == "Wall")
-            HitWall();
+            HitWall(collision.gameObject);
     }
 
 
@@ -50,16 +50,17 @@ public class Bullet : MonoBehaviour
 
         DestroyThisBullet();
     }
-    public void HitWall()
+    public void HitWall(GameObject wall)
     {
-        if (shot_by_player)
+        if (shot_by_player && SpaceInvaders.space_invaders.round_running)
             SpaceInvaders.space_invaders.current_round_record.player_missed_shots++;
 
+        //Debug.Log("hit wall " + wall.name);
         DestroyThisBullet();
     }
     public void DestroyThisBullet()
     {
-        if (shot_by_player)
+        if (shot_by_player && SpaceInvaders.space_invaders.round_running)
             SpaceInvaders.space_invaders.current_round_record.num_finished_shots++;
 
         float lifespan = Time.time - time_of_creation;
