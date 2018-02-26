@@ -1060,7 +1060,7 @@ RectTransform:
   m_Children:
   - {fileID: 435762288}
   m_Father: {fileID: 1370795342}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1093,7 +1093,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &273639456
 GameObject:
@@ -1343,7 +1343,6 @@ GameObject:
   m_Component:
   - component: {fileID: 379369205}
   - component: {fileID: 379369207}
-  - component: {fileID: 379369208}
   - component: {fileID: 379369206}
   - component: {fileID: 379369209}
   m_Layer: 0
@@ -1417,11 +1416,11 @@ MonoBehaviour:
   trial_running: 0
   round_running: 0
   enforce_time_limit: 1
-  time_limit: 60
+  time_limit: 50
   half_time_for_practice_rounds: 1
   survey_objects_to_activate:
   - {fileID: 91361631}
-  - {fileID: 1379749299}
+  - {fileID: 216551292}
   input_delay_values: {fileID: 4900000, guid: d1772117d44d8644eb10612f815e0727, type: 3}
   input_delay_per_round: 
   practice_rounds: 
@@ -1445,57 +1444,6 @@ MonoBehaviour:
   enemy_bullet_travel_times: []
   cur_bullet_speed: 0
   bullet_cooldown: 0.15
---- !u!114 &379369208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 379369204}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cb0baec4cf9fc44db5d53e35df6ce39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  destroy_when_trial_starts: []
-  trial_id: 1
-  number_players_required: 1
-  current_round: -1
-  total_rounds: 15
-  time_for_current_round: 0
-  total_time_for_trial: 0
-  dont_check_player_count: 1
-  trial_running: 0
-  round_running: 0
-  enforce_time_limit: 1
-  time_limit: 15
-  half_time_for_practice_rounds: 1
-  survey_objects_to_activate:
-  - {fileID: 91361631}
-  - {fileID: 1334796931}
-  input_delay_values: {fileID: 4900000, guid: df40127beb16180498120a3c8ab6960d, type: 3}
-  input_delay_per_round: 
-  practice_rounds: 
-  survey_rounds: 
-  rounds_since_survey: 0
-  text_file_name: MultiInputPong.csv
-  timer_beeps: {fileID: 1695031112}
-  start_beep: {fileID: 1864387132}
-  round_timer: {fileID: 1092053278}
-  practice_round_text: {fileID: 177910849}
-  to_menu_after_trial: 1
-  position_to_spawn_ball: {fileID: 1453924742}
-  player_net: {fileID: 591713136}
-  opposite_wall: {fileID: 1877492208}
-  timer_text: {fileID: 1241637946}
-  starting_ball_path: {fileID: 639088854}
-  pong_settings: {fileID: 4900000, guid: 19cc3da2ac5ce754ca778b48376b371a, type: 3}
-  ball_speeds: []
-  distances_between_players: []
-  bounces_since_last_reset: 0
-  mouse_UI_screen: {fileID: 1450874126}
-  drawing_tablet_UI_screen: {fileID: 747677499}
-  touchscreen_UI_screen: {fileID: 851362800}
-  survey_canvas: {fileID: 91361631}
 --- !u!114 &379369209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1574,7 +1522,7 @@ GameObject:
   - component: {fileID: 435762290}
   - component: {fileID: 435762289}
   m_Layer: 5
-  m_Name: LikertScale
+  m_Name: 5ptLikertScale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1596,8 +1544,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000014514, y: -290}
-  m_SizeDelta: {x: 600, y: 400}
+  m_AnchoredPosition: {x: 0.000014514, y: -243.7}
+  m_SizeDelta: {x: 600, y: 307.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &435762289
 MonoBehaviour:
@@ -1666,7 +1614,7 @@ RectTransform:
   m_Children:
   - {fileID: 1562384570}
   m_Father: {fileID: 1370795342}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1688,7 +1636,7 @@ MonoBehaviour:
   object_to_activate_next: {fileID: 0}
   name_of_info: perf_due_to_me
   min_number: 1
-  max_number: 7
+  max_number: 5
 --- !u!114 &491405037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1725,7 +1673,7 @@ MonoBehaviour:
   m_Text: 'While using the current device, how well I did was completely due to me.
 
 
-    (press 1,2,3,4,5,6,7 on your keyboard)'
+    (press 1,2,3,4,5 on your keyboard)'
 --- !u!222 &491405038
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1991,7 +1939,7 @@ Transform:
   m_Children:
   - {fileID: 1872676580}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &604570995
 GameObject:
@@ -2354,7 +2302,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4465263038014262, guid: f7febc937c9e9394da7aa284a80e4c0d, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 68529225487516314, guid: f7febc937c9e9394da7aa284a80e4c0d,
         type: 2}
@@ -3426,7 +3374,7 @@ GameObject:
   - component: {fileID: 926839938}
   - component: {fileID: 926839937}
   m_Layer: 5
-  m_Name: Device was fun.
+  m_Name: Playing that last round was fun.
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3445,7 +3393,7 @@ RectTransform:
   m_Children:
   - {fileID: 2077206659}
   m_Father: {fileID: 1370795342}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3465,9 +3413,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   object_to_activate_next: {fileID: 491405034}
-  name_of_info: device_was_fun
+  name_of_info: was_fun
   min_number: 1
-  max_number: 7
+  max_number: 5
 --- !u!114 &926839938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3501,10 +3449,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Overall, using the current input device was fun.
+  m_Text: 'Playing that last round was fun.
 
 
-    (press 1,2,3,4,5,6,7 on your keyboard)'
+    (press 1,2,3,4,5 on your keyboard)'
 --- !u!222 &926839939
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3799,7 +3747,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4915852244354798, guid: 992a41fa0ca710d4da1dbc2340a1d2b5, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1362735002478542, guid: 992a41fa0ca710d4da1dbc2340a1d2b5, type: 2}
       propertyPath: m_IsActive
@@ -3808,74 +3756,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 992a41fa0ca710d4da1dbc2340a1d2b5, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1239990912
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1239990915}
-  - component: {fileID: 1239990914}
-  - component: {fileID: 1239990913}
-  m_Layer: 0
-  m_Name: InputState
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1239990913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1239990912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2ef0b9cc68a6e44bbd7e45844f81ed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  players_can_join: 1
-  player_prefab: {fileID: 1621668258466508, guid: e907d70cde6b4714b9ba291393f10ca4,
-    type: 2}
---- !u!114 &1239990914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1239990912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1244987995, guid: 38d822053753f834ab54ed3bd135d060, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LogLevel: 2
-  UseFixedUpdate: 1
-  LifetimeManagement: 0
-  DeviceStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: RavingBots.MultiInput.DeviceStateChangedEvent, RavingBots.MultiInput,
-      Version=0.12.0.0, Culture=neutral, PublicKeyToken=null
-  DevicesEnumerated:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: RavingBots.MultiInput.DevicesEnumeratedEvent, RavingBots.MultiInput,
-      Version=0.12.0.0, Culture=neutral, PublicKeyToken=null
---- !u!4 &1239990915
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1239990912}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1241637945
 GameObject:
   m_ObjectHideFlags: 0
@@ -4369,9 +4249,9 @@ RectTransform:
   - {fileID: 1278078983}
   - {fileID: 155667798}
   - {fileID: 795360735}
+  - {fileID: 216551296}
   - {fileID: 926839936}
   - {fileID: 491405035}
-  - {fileID: 216551296}
   - {fileID: 645372198}
   - {fileID: 1813350385}
   - {fileID: 1669150882}
@@ -4439,7 +4319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1379749300
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4448,7 +4328,7 @@ RectTransform:
   m_GameObject: {fileID: 1379749299}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000155, y: 1.0000155, z: 1.0000155}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 14862143}
   m_Father: {fileID: 1370795342}
@@ -4456,7 +4336,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00012207031, y: -0.000022888184}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -2, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1379749301
@@ -4472,7 +4352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   object_to_activate_next: {fileID: 0}
   name_of_info: 
-  key_to_press: return
+  key_to_press: space
 --- !u!114 &1379749302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4617,7 +4497,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1472605023
 GameObject:
@@ -4859,7 +4739,7 @@ GameObject:
   - component: {fileID: 1562384572}
   - component: {fileID: 1562384571}
   m_Layer: 5
-  m_Name: 7ptLikertScale
+  m_Name: 5ptLikertScale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4904,7 +4784,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8a7c9bd002f47674d8d5099610bb6982, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 25ef9cf39156d72428a8fa49a3f04841, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -5923,7 +5803,7 @@ Transform:
   m_Children:
   - {fileID: 569924538}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1877492209
 AudioSource:
@@ -9497,7 +9377,7 @@ GameObject:
   - component: {fileID: 2077206661}
   - component: {fileID: 2077206660}
   m_Layer: 5
-  m_Name: 7ptLikertScale
+  m_Name: 5ptLikertScale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9542,7 +9422,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8a7c9bd002f47674d8d5099610bb6982, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 25ef9cf39156d72428a8fa49a3f04841, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
