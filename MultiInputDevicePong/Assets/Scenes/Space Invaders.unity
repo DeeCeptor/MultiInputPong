@@ -1595,7 +1595,7 @@ GameObject:
   - component: {fileID: 491405037}
   - component: {fileID: 491405036}
   m_Layer: 5
-  m_Name: How well I did during that last round was completely due to me.
+  m_Name: How well I did was completely due to me.
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1670,7 +1670,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'While using the current device, how well I did was completely due to me.
+  m_Text: 'How well I did was completely due to me.
 
 
     (press 1,2,3,4,5 on your keyboard)'
