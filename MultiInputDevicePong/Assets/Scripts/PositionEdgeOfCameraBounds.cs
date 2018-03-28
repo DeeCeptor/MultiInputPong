@@ -8,7 +8,7 @@ public class PositionEdgeOfCameraBounds : MonoBehaviour
 {
     public Corner which_corner;
 
-	void Awake () 
+	void Start () 
 	{
         // Bottom left
         Vector3 minScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));

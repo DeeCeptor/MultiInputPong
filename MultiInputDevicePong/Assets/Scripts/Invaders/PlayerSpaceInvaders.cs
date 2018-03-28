@@ -97,7 +97,7 @@ public static class BulletPooler
 {
     public static List<GameObject> all_bullets = new List<GameObject>();
 
-    static int num_pooled_bullets = 100;
+    static int num_pooled_bullets = 20;
     public static int num_active_enemy_bullets = 0;
 
 

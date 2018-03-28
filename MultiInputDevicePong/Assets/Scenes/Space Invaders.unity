@@ -1507,6 +1507,21 @@ Prefab:
       propertyPath: bottomleft
       value: 
       objectReference: {fileID: 346224121}
+    - target: {fileID: 20968516967502194, guid: be15592e614c3cc419e42dc1db2538ac,
+        type: 2}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 20968516967502194, guid: be15592e614c3cc419e42dc1db2538ac,
+        type: 2}
+      propertyPath: orthographic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20968516967502194, guid: be15592e614c3cc419e42dc1db2538ac,
+        type: 2}
+      propertyPath: m_RenderingPath
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: be15592e614c3cc419e42dc1db2538ac, type: 2}
   m_IsPrefabParent: 0
@@ -2345,6 +2360,11 @@ Prefab:
     - target: {fileID: 114614159679954324, guid: f7febc937c9e9394da7aa284a80e4c0d,
         type: 2}
       propertyPath: allow_x_movement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 82855989457899680, guid: f7febc937c9e9394da7aa284a80e4c0d,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -5017,7 +5037,6 @@ GameObject:
   - component: {fileID: 1724407834}
   - component: {fileID: 1724407833}
   - component: {fileID: 1724407832}
-  - component: {fileID: 1724407831}
   m_Layer: 5
   m_Name: World Canvas
   m_TagString: Untagged
@@ -5025,22 +5044,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1724407831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1724407830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1724407832
 MonoBehaviour:
   m_ObjectHideFlags: 0

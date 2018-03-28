@@ -8,9 +8,6 @@ public class Bullet : MonoBehaviour
     public float time_of_creation;
 
 
-    void Start () {
-		
-	}
 
 
     private void OnCollisionEnter2D(Collision2D collision)

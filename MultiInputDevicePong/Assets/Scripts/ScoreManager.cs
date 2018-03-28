@@ -202,12 +202,11 @@ public class ScoreManager : MonoBehaviour
         total_time = 0;
     }
 
-
+    Rect fixedUpdateRect = new Rect(Vector2.zero, Vector2.one * 200);
     void OnGUI()
     {
         // *&* Remove for test participants
-        if (
-             debug_view ||
+        if (debug_view || 
             (Application.isEditor && debug_view))
         {
             float ms_per_frame = deltaTime * 1000.0f;
@@ -216,7 +215,7 @@ public class ScoreManager : MonoBehaviour
             if (GlobalSettings.InputDelayFrames > 0)
                 fpstext += "\nIntroduced Input Delay (ms): " + GlobalSettings.InputDelayFrames * Time.fixedDeltaTime * GlobalSettings.ms_per_second;
 
-            GUI.Label(new Rect(Vector2.zero, Vector2.one * 200), "Average ms per fixed update: " + average_ms_per_frame + "\n" + fpstext);
+            GUI.Label(fixedUpdateRect, "Average ms per fixed update: " + average_ms_per_frame + "\n" + fpstext);
         }
     }
 }
