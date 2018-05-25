@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class GlobalSettings
 {
-    public enum Input_Device_Type { Mouse, Drawing_Tablet, Touchscreen };
+    public enum Input_Device_Type { Mouse, Drawing_Tablet, Touchscreen, Controller };
     public static Input_Device_Type current_input_device = Input_Device_Type.Mouse;
     public static Queue<Input_Device_Type> order_of_device_types = new Queue<Input_Device_Type>();
 

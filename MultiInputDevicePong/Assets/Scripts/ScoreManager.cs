@@ -41,7 +41,7 @@ public class ScoreManager : MonoBehaviour
         players_on_teams.Add("Blue", 0);
         players_on_teams.Add("Red", 0);
 
-        Cursor.visible = true;
+        //Cursor.visible = true;
 	}
     private void Start()
     {
@@ -138,11 +138,12 @@ public class ScoreManager : MonoBehaviour
             CmdReset();
         */
 
-        if (debug_view)
+        if (debug_view || Application.isEditor)
         {
             if (Input.GetKeyDown(KeyCode.M))
             {
                 Cursor.visible = !Cursor.visible;
+                Debug.Log("Setting cursor: " + Cursor.visible);
             }
 
             // Fast forward
