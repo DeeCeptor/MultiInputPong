@@ -28,6 +28,8 @@ public static class GlobalSettings
                         p.GetComponent<AbsoluteMovement>().ResetInputQueues();
                     if (p.GetComponent<QueueMouseClicks>() != null)
                         p.GetComponent<QueueMouseClicks>().ResetInputQueues();
+                    if (p.GetComponent<AimingMovement>() != null)
+                        p.GetComponent<AimingMovement>().ResetInputQueues();
                 }
             }
             input_delay = value;

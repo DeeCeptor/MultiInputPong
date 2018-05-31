@@ -1492,7 +1492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &614790003
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1509,9 +1509,9 @@ RectTransform:
   m_Father: {fileID: 1878140004}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 167.2, y: -76.96452}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 334.4, y: 47.223656}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &614790004
@@ -1548,7 +1548,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 614790005}
   m_Template: {fileID: 1298286218}
   m_CaptionText: {fileID: 768100498}
@@ -1560,11 +1560,13 @@ MonoBehaviour:
     m_Options:
     - m_Text: Select Input Device Order
       m_Image: {fileID: 0}
-    - m_Text: 1. Mouse -> Drawing Tablet -> Touchscreen
+    - m_Text: 1. Mouse -> Drawing Tablet -> Touchscreen -> Controller
       m_Image: {fileID: 0}
-    - m_Text: 2. Touchscreen -> Mouse -> Drawing Tablet
+    - m_Text: 2. Controller -> Mouse -> Drawing Tablet -> Touchscreen
       m_Image: {fileID: 0}
-    - m_Text: 3. Drawing Tablet -> Touchscreen -> Mouse
+    - m_Text: 3. Touchscreen -> Controller -> Mouse -> Drawing Tablet
+      m_Image: {fileID: 0}
+    - m_Text: 4. Drawing Tablet -> Touchscreen -> Controller -> Mouse
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5264,7 +5266,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1751464112}
   m_OnClick:
     m_PersistentCalls:
@@ -5277,7 +5279,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Space Invaders
+          m_StringArgument: MultiInputAiming
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,

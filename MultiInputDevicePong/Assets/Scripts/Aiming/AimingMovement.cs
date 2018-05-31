@@ -15,6 +15,7 @@ public class AimingMovement : MonoBehaviour
 
     // Stores inputs. Used for adding input delay
     Queue<Vector2> input_queue = new Queue<Vector2>();
+    Queue<bool> click_queue = new Queue<bool>();
 
     // How can the player move?
     public bool allow_x_movement = true;
@@ -86,7 +87,8 @@ public class AimingMovement : MonoBehaviour
                 TwoDAimingTrial.aiming_trial.ReturnedToMiddle();
             }
         }
-        TwoDAimingTrial.aiming_trial.current_round_record.num_clicks++;
+        if (Trial.trial.trial_running)
+            TwoDAimingTrial.aiming_trial.current_round_record.num_clicks++;
     }
 
     int clicks_this_update = 0;
@@ -94,14 +96,7 @@ public class AimingMovement : MonoBehaviour
     void FixedUpdate () 
 	{
         KinematicMovement();
-
-        // Click queue
-        if (Input.GetMouseButtonDown(0) && clicks_this_update == 0)
-        {
-            Debug.Log("Clicks this update : " + clicks_this_update, this.gameObject);
-            Clicked();
-            clicks_this_update++;
-        }
+        UpdateClicks();
     }
     private void Update()
     {
@@ -113,24 +108,51 @@ public class AimingMovement : MonoBehaviour
             TwoDAimingTrial.aiming_trial.current_round_record.travel_path_y.Add(this.transform.position.y);
         }
     }
+    public void UpdateClicks()
+    {
+        QueueCurrentClicks();
+
+        bool cur_clicked = false;
+        // Dequeue input we should use this frame
+        if (click_queue.Count > GlobalSettings.InputDelayFrames)
+        {
+            cur_clicked = click_queue.Dequeue();
+        }
+
+        // Check if we should issue a click this frame
+        if (cur_clicked)
+            Clicked();
+    }
+    public void QueueCurrentClicks()
+    {
+        bool clicked_this_frame = false;
+
+        // Record any clicks that happened this frame
+        if (clicks_this_update == 0)
+        {
+            // Check what device we're using
+            if (GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller)
+            {
+                if (Input.GetButtonDown("Submit"))
+                {
+                    clicks_this_update++;
+                    clicked_this_frame = true;
+                }
+            }
+            else
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    clicks_this_update++;
+                    clicked_this_frame = true;
+                }
+            }
+        }
+
+        click_queue.Enqueue(clicked_this_frame);
+    }
     public void KinematicMovement()
     {
-        // Using the drawing tablet
-
-
-        ///////////////////////////////////////////////////////////
-        // INPUT
-
-
-        /*
-        // Adjust sensitivity
-        float mouse_wheel = player.input[InputCode.MouseWheel].Value;
-        if (adjust_sensitivity && mouse_wheel != 0)
-        {
-            Adjust_Sensitivity(mouse_wheel);
-        }
-        */
-
         QueueCurrentInput();
 
         Vector2 cur_input = Vector2.zero;
@@ -139,8 +161,6 @@ public class AimingMovement : MonoBehaviour
         {
             cur_input = input_queue.Dequeue();
         }
-        else
-            cur_input = Vector2.zero;
 
         ////////////////////////////////////////////////////////
         // Don't move if there's no input
@@ -171,20 +191,8 @@ public class AimingMovement : MonoBehaviour
         Vector2 cur_input = Vector2.zero;
 
         // Check what device we're using
-
-        // MOUSE/TOUCHSCREEN/DRAWING TABLET
-        if (false)
-        {
-            if (allow_x_movement)
-            {
-                cur_input.x = Input.mousePosition.x;
-            }
-            if (allow_y_movement)
-                cur_input.y = Input.mousePosition.y;
-
-        }
-        // CONTROLLER JOYSTICK
-        else if (true)
+        // RELATIVE MOVEMENT/POSITIONING:   CONTROLLER JOYSTICK
+        if (GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller)
         {
             if (allow_x_movement)
             {
@@ -192,6 +200,16 @@ public class AimingMovement : MonoBehaviour
             }
             if (allow_y_movement)
                 cur_input.y = Input.GetAxis("ControllerY") * Time.fixedDeltaTime * relative_speed_sensitivity;
+        }
+        // DIRECT MOVEMENT/POSITIONING:     MOUSE/TOUCHSCREEN/DRAWING TABLET
+        else
+        {
+            if (allow_x_movement)
+            {
+                cur_input.x = Input.mousePosition.x;
+            }
+            if (allow_y_movement)
+                cur_input.y = Input.mousePosition.y;
         }
 
         // Place input in our queue
@@ -201,15 +219,17 @@ public class AimingMovement : MonoBehaviour
     public Vector2 MoveToNewPosition(Vector2 cur_input)
     {
         Vector2 new_pos;
-        // MOUSE/TOUCHSCREEN/DRAWING TABLET
-        if (false)
+        // RELATIVE MOVEMENT (controller)
+        if (GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller)
+        {
+            new_pos = (Vector2)this.transform.position + cur_input;
+        }
+        // ABSOLUTE POSITION/MOVEMENT   MOUSE/TOUCHSCREEN/DRAWING TABLET
+        else
         {
             new_pos = Camera.main.ScreenToWorldPoint(cur_input);
         }
-        else if (true)
-        {
-            new_pos = (Vector2) this.transform.position + cur_input;
-        }
+
         return new_pos;
     }
 
@@ -233,5 +253,6 @@ public class AimingMovement : MonoBehaviour
     public void ResetInputQueues()
     {
         input_queue.Clear();
+        click_queue.Clear();
     }
 }

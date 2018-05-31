@@ -55,6 +55,7 @@ public class TwoDAimingTrial : Trial
     public GameObject mouse_UI_screen;
     public GameObject drawing_tablet_UI_screen;
     public GameObject touchscreen_UI_screen;
+    public GameObject controller_UI_screen;
     public GameObject survey_canvas;
 
     public GameObject go_to_middle;
@@ -74,7 +75,6 @@ public class TwoDAimingTrial : Trial
 
     public void ClickedOnTarget(GameObject target, GameObject mouse_pos)
     {
-        Debug.Log("Clicked on target");
         // Record stuffs
 
         // Location of target
@@ -185,6 +185,9 @@ public class TwoDAimingTrial : Trial
             case GlobalSettings.Input_Device_Type.Touchscreen:
                 touchscreen_UI_screen.SetActive(true);
                 break;
+            case GlobalSettings.Input_Device_Type.Controller:
+                controller_UI_screen.SetActive(true);
+                break;
         }
     }
 
@@ -208,8 +211,17 @@ public class TwoDAimingTrial : Trial
         current_round_record.random_seed = random_seed;
 
         // IF this is a practice round, set the device type
-        if (IsCurrentRoundRoundPractice())
+        // May need to change this
+        // NOT WORKING
+        if (String.Equals("switch", other_terms_rounds[current_round], StringComparison.InvariantCultureIgnoreCase))  //( "switch" == other_terms_rounds[current_round])
+        {
+            Debug.Log("SWITCHING DEVICE");
             SetInputDeviceType();
+        }
+        else
+        {
+            Debug.Log("Not switching:" + other_terms_rounds[current_round] + ":" + current_round);
+        }
         current_round_record.device = GlobalSettings.current_input_device;
 
         SpawnNewTarget();
@@ -286,6 +298,7 @@ public class TwoDAimingTrial : Trial
     {
         base.Start();
     }
+    
 
 
     bool ball_was_below_before = false;

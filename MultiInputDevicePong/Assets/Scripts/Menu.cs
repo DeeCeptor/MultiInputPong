@@ -30,15 +30,24 @@ public class Menu : MonoBehaviour
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Mouse);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
+                GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
                 break;
             case 2:
+                GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
+                GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Mouse);
+                GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
+                break;
+            case 3:
+                GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
+                GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Mouse);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
                 break;
-            case 3:
+            case 4:
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
+                GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Mouse);
                 break;
         }
