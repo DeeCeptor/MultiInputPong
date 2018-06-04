@@ -63,11 +63,16 @@ public class TwoDAimingTrial : Trial
     public List<float> target_sizes = new List<float>();
     public int random_seed = 1234;
 
+    TwoDAimingTrialRecord prev_round_record;
+    int prev_lag = 0;
+    int prev_practice = 0;
+
+
     public override void Awake()
     {
         aiming_trial = this;
         Cursor.visible = false;
-        UnityEngine.Random.InitState(random_seed);
+        //UnityEngine.Random.InitState(random_seed);
 
         base.Awake();
     }
@@ -134,6 +139,7 @@ public class TwoDAimingTrial : Trial
         PopulateSettings();
         base.StartTrial();
     }
+    // Add target distances?
     public void PopulateSettings()
     {
         Debug.Log("start loading settings", this.gameObject);
@@ -172,6 +178,9 @@ public class TwoDAimingTrial : Trial
             return;
         }
 
+        // Reinitialize random seed so EACH device case gets the same random numbers
+        UnityEngine.Random.InitState(random_seed);
+
         // Bring up UI, to show them what to use, press ENTER when ready
         survey_canvas.SetActive(true);
         switch (GlobalSettings.current_input_device)
@@ -191,12 +200,9 @@ public class TwoDAimingTrial : Trial
         }
     }
 
-
     public override void StartRound()
     {
         //ScoreManager.score_manager.ResetScore();
-        
-
         // Put player in correct spot
         //ScoreManager.score_manager.players[0].transform.position = Vector2.zero;
 
@@ -213,16 +219,29 @@ public class TwoDAimingTrial : Trial
         // IF this is a practice round, set the device type
         // May need to change this
         // NOT WORKING
-        if (String.Equals("switch", other_terms_rounds[current_round], StringComparison.InvariantCultureIgnoreCase))  //( "switch" == other_terms_rounds[current_round])
+        //String.Compare(other_terms_rounds[current_round].Trim(), "switch");
+        if (other_terms_rounds[current_round] != "")
+            //||other_terms_rounds[current_round] == "switch" || String.Equals("switch", other_terms_rounds[current_round], StringComparison.InvariantCultureIgnoreCase))  //( "switch" == other_terms_rounds[current_round])
         {
-            Debug.Log("SWITCHING DEVICE");
+            Debug.Log("SWITCHING DEVICE:"+ other_terms_rounds[current_round]+":");
             SetInputDeviceType();
         }
         else
         {
-            Debug.Log("Not switching:" + other_terms_rounds[current_round] + ":" + current_round);
+
         }
         current_round_record.device = GlobalSettings.current_input_device;
+
+        // Reset random seed if we're switching lag levels
+        if (prev_round_record == null 
+            || prev_round_record.ms_input_lag_of_round != current_round_record.ms_input_lag_of_round 
+            || (prev_round_record.practice_round == 1 && !IsCurrentRoundRoundPractice()) )
+        {
+            if (prev_round_record != null)
+                Debug.Log("RESETTING RANDOM SEED, new lag: " + current_round_record.ms_input_lag_of_round + ", prev lag: " + prev_round_record.ms_input_lag_of_round
+                + " practice: " + current_round_record.practice_round + " prev practice: " + prev_round_record.practice_round);
+            UnityEngine.Random.InitState(random_seed);
+        }
 
         SpawnNewTarget();
 
@@ -274,7 +293,7 @@ public class TwoDAimingTrial : Trial
     public override void ResetBetweenRounds()
     {
         base.ResetBetweenRounds();
-
+        prev_round_record = current_round_record;
         current_round_record = new TwoDAimingTrialRecord();
     }
 

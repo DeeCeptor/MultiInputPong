@@ -28,7 +28,7 @@ public class AimingMovement : MonoBehaviour
     private const float max_sensitivity = 2.0f;
     private const float sensitivity_increment = 0.1f;
     private const float speed_factor = 0.01f;   // Multiplied by sensitivity to get how far we move this frame
-    private const float relative_speed_sensitivity = 2.0f;
+    private const float relative_speed_sensitivity = 6.0f;
 
     private const float kick_force_multiplier = 2000f;//2000f
 

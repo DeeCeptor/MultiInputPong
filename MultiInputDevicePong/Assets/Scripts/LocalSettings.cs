@@ -31,9 +31,9 @@ public static class GlobalSettings
                     if (p.GetComponent<AimingMovement>() != null)
                         p.GetComponent<AimingMovement>().ResetInputQueues();
                 }
+                Debug.Log("Changing local latency to (ms): " + input_delay);
             }
             input_delay = value;
-            Debug.Log("Current local latency (ms): " + input_delay);
         }
     } 
     private static int input_delay = 0;

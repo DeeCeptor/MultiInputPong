@@ -87,7 +87,7 @@ public class Trial : MonoBehaviour
     public int trial_id = 0;    // What task are we doing? Stationary kick into net is 1, moving kick into net is 2, etc
     public int number_players_required = 1;
     public int current_round = -1;   // Current round
-    public int total_rounds = 0;    // How many rounds are we aiming for?
+    public int total_rounds = 0;    // How many rounds are we aiming for?   If it's zero, use the amount of rounds in read in by the input delay file
     public float time_for_current_round;    // In seconds, elapsed time of current trial
     public float total_time_for_trial;  // In seconds, how long this trial has lasted
     public bool dont_check_player_count = false;
@@ -120,6 +120,11 @@ public class Trial : MonoBehaviour
     public virtual void Awake()
     {
         trial = this;
+        if (total_rounds <= 0)
+        {
+            total_rounds = GetNumberOfRounds();
+            Debug.Log("Using number of rounds found in input delay file: " + total_rounds);
+        }
         practice_rounds = new bool[total_rounds];
         survey_rounds = new bool[total_rounds];
         other_terms_rounds = new string[total_rounds];
@@ -129,6 +134,13 @@ public class Trial : MonoBehaviour
     public virtual void Start()
     {
 
+    }
+
+
+    // Briefly opens the input delay file to get the number of rounds it goes for
+    public int GetNumberOfRounds()
+    {
+        return input_delay_values.text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).Length;
     }
 
 
@@ -151,18 +163,22 @@ public class Trial : MonoBehaviour
             // Get the input delay
             input_delay_per_round.Add(int.Parse(items[0]));
 
-            if (items.Length > 1 && total_rounds > round_number)
+            if (total_rounds > round_number)
             {
-                // Get the practice round
-                if (items[1].Contains("Practice"))
-                    practice_rounds[round_number] = true;
-                // Get the survey
-                if (items[1].Contains("Survey"))
-                    survey_rounds[round_number] = true;
-                if (items.Length > 2 && items[2] != "")
+                other_terms_rounds[round_number] = "";
+                if (items.Length > 1)
                 {
-                    other_terms_rounds[round_number] = items[2];
-                    Debug.Log(items[2] + ":" + round_number);
+                    // Get the practice round
+                    if (items[1].Contains("Practice"))
+                        practice_rounds[round_number] = true;
+                    // Get the survey
+                    if (items[1].Contains("Survey"))
+                        survey_rounds[round_number] = true;
+                    if (items.Length > 2 && items[2] != "")
+                    {
+                        other_terms_rounds[round_number] = items[2];
+                        Debug.Log(items[2] + ":" + round_number);
+                    }
                 }
             }
 
@@ -203,10 +219,11 @@ public class Trial : MonoBehaviour
             Debug.Log("Setting input delay to: " + input_delay_per_round[current_round], this.gameObject);
         }
 
+        bool is_practice = IsCurrentRoundRoundPractice();
         if (practice_round_text != null)
-            practice_round_text.gameObject.SetActive(IsCurrentRoundRoundPractice());
+            practice_round_text.gameObject.SetActive(is_practice);
 
-        if (IsCurrentRoundRoundPractice() && half_time_for_practice_rounds && current_round != 0)
+        if (is_practice && half_time_for_practice_rounds && current_round != 0)
         {
             time_limit = default_time_limit / 2f;
         }
@@ -260,14 +277,13 @@ public class Trial : MonoBehaviour
         round_results[current_round].trial_id = trial_id;
         rounds_since_survey++;
         round_results[current_round].num_rounds_since_survey = rounds_since_survey;
-        round_results[current_round].practice_round = IsCurrentRoundRoundPractice() ? 1 : 0;
 
         Camera cam = Camera.main;
         float height = 2f * cam.orthographicSize;
         float width = height * cam.aspect;
         round_results[current_round].total_screen_width = width;
         round_results[current_round].total_screen_height = height;
-
+        round_results[current_round].practice_round = IsCurrentRoundRoundPractice() ? 1 : 0;
 
         // Should we bring up the survey window?
         if (survey_rounds[current_round])
