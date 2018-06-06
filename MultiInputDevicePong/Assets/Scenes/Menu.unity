@@ -2223,25 +2223,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Commands in trials:
+  m_Text: 'Click/press A on the white circles as quickly as you can after they appear
 
-    SPACEBAR to start trial (after participant is ready)
-
-
-    To control the player:
-
-    Move the mouse left and right
-
-    Left click or HOLD down the left mouse button to shoot
-
-
-    Goals:
-
-    Dodge incoming red bullets
-
-    WHILE
-
-    shooting enemies at the top of the screen'
+    Do the above tos tart a round'
 --- !u!222 &705703522
 CanvasRenderer:
   m_ObjectHideFlags: 0

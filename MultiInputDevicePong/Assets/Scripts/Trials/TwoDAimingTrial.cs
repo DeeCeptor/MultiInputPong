@@ -61,6 +61,7 @@ public class TwoDAimingTrial : Trial
     public GameObject go_to_middle;
     public GameObject target;
     public List<float> target_sizes = new List<float>();
+    public List<float> target_distances = new List<float>();
     public int random_seed = 1234;
 
     TwoDAimingTrialRecord prev_round_record;
@@ -116,10 +117,23 @@ public class TwoDAimingTrial : Trial
     public void SpawnNewTarget()
     {
         // Get new target center postion
-        // Is it ok so long as the center of the target isn't off the screen?
-        Vector2 target_pos = new Vector2(
+        // Spawn a target that ISN't OFF THE SCREEN
+        /*Vector2 target_pos = new Vector2(
             UnityEngine.Random.Range(CameraRect.camera_settings.bottomleft.transform.position.x, CameraRect.camera_settings.topright.transform.position.x),
-            UnityEngine.Random.Range(CameraRect.camera_settings.bottomleft.transform.position.y, CameraRect.camera_settings.topright.transform.position.y));
+            UnityEngine.Random.Range(CameraRect.camera_settings.bottomleft.transform.position.y, CameraRect.camera_settings.topright.transform.position.y));*/
+
+        // Spawn a target a set distance from the player, in a random direction
+        // Check if target pos is within screen bounds
+        float distance = target_distances[current_round];
+        Vector2 target_pos = GetRandomPosition(distance) + (Vector2) AimingMovement.aiming_movement.transform.position;
+        // NOT WORKING. MUST BE DISTANCE FROM MOUSE TOO
+        // ENSURE IT ISNT OFF-SCREEN
+        while (!CameraRect.camera_settings.PointWithinCameraBounds(target_pos))
+        {
+            Debug.Log(target_pos + " not within camera bounds", this.gameObject);
+            target_pos = GetRandomPosition(distance) + (Vector2)AimingMovement.aiming_movement.transform.position;
+        }
+
         target.transform.position = target_pos;
         current_round_record.target_center = target_pos;
         target.SetActive(true);
@@ -132,7 +146,10 @@ public class TwoDAimingTrial : Trial
 
         Debug.Log("Spawned new target at " + target_pos);
     }
-
+    public Vector2 GetRandomPosition(float radius)
+    {
+        return UnityEngine.Random.insideUnitCircle.normalized * radius;
+    }
 
     public override void StartTrial()
     {
@@ -156,6 +173,7 @@ public class TwoDAimingTrial : Trial
             string[] items = s.Split(',');
 
             target_sizes.Add(float.Parse(items[0]));
+            target_distances.Add(float.Parse(items[1]));
             //ball_speeds.Add(float.Parse(items[0]));
             //distances_between_players.Add(float.Parse(items[1]));
         }

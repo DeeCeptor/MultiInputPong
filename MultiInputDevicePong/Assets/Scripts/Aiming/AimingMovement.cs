@@ -28,7 +28,7 @@ public class AimingMovement : MonoBehaviour
     private const float max_sensitivity = 2.0f;
     private const float sensitivity_increment = 0.1f;
     private const float speed_factor = 0.01f;   // Multiplied by sensitivity to get how far we move this frame
-    private const float relative_speed_sensitivity = 6.0f;
+    private const float relative_speed_sensitivity = 8.0f;
 
     private const float kick_force_multiplier = 2000f;//2000f
 
@@ -194,12 +194,20 @@ public class AimingMovement : MonoBehaviour
         // RELATIVE MOVEMENT/POSITIONING:   CONTROLLER JOYSTICK
         if (GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller)
         {
+            // create magnitude deadzone by limiting the range of stick from 0 to set gravity deadzone 
+            Vector2 stick_input = new Vector2(Input.GetAxis("ControllerX"), Input.GetAxis("ControllerY"));
+            if (stick_input.magnitude < 0.19f)//configurator.gravity_deadzone)
+            {
+                stick_input.x = 0;
+                stick_input.y = 0;
+            }
+
             if (allow_x_movement)
             {
-                cur_input.x = Input.GetAxis("ControllerX") * Time.fixedDeltaTime * relative_speed_sensitivity;
+                cur_input.x = stick_input.x * Time.fixedDeltaTime * relative_speed_sensitivity;
             }
             if (allow_y_movement)
-                cur_input.y = Input.GetAxis("ControllerY") * Time.fixedDeltaTime * relative_speed_sensitivity;
+                cur_input.y = stick_input.y * Time.fixedDeltaTime * relative_speed_sensitivity;
         }
         // DIRECT MOVEMENT/POSITIONING:     MOUSE/TOUCHSCREEN/DRAWING TABLET
         else
