@@ -104,8 +104,13 @@ public class AimingMovement : MonoBehaviour
         mouse_pos = Input.mousePosition;
         if (TwoDAimingTrial.aiming_trial.round_running)
         {
-            TwoDAimingTrial.aiming_trial.current_round_record.travel_path_x.Add(this.transform.position.x);
-            TwoDAimingTrial.aiming_trial.current_round_record.travel_path_y.Add(this.transform.position.y);
+            // Get the current position
+            Vector3 current_pos = new Vector3(this.transform.position.x, this.transform.position.y, 1);
+            TwoDAimingTrial.aiming_trial.current_round_record.travel_path_vector.Add(current_pos);
+
+            // Record it for posterity's sake
+            TwoDAimingTrial.aiming_trial.current_round_record.travel_path_x.Add(current_pos.x);
+            TwoDAimingTrial.aiming_trial.current_round_record.travel_path_y.Add(current_pos.y);
         }
     }
     public void UpdateClicks()
@@ -254,7 +259,11 @@ public class AimingMovement : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
+        if (collision.gameObject.tag == "Invader")
+        {
+            TwoDAimingTrial.aiming_trial.current_round_record.target_reentry++;
+            Debug.Log("Entered target for " + TwoDAimingTrial.aiming_trial.current_round_record.target_reentry + " time");
+        }
     }
 
 

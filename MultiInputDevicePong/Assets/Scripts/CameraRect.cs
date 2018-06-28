@@ -35,17 +35,8 @@ public class CameraRect : MonoBehaviour
                                 bottomLeft.y,
                                 topRight.x - bottomLeft.x,
                                 topRight.y - bottomLeft.y);
-        // Maybe change this??? 
-        arena_rect = new Rect();
-        arena_rect.xMax = topright.transform.position.x;
-        arena_rect.xMin = bottomleft.transform.position.x;
-        arena_rect.yMax = topright.transform.position.y;
-        arena_rect.yMin = bottomleft.transform.position.y;
-        /*
-        arena_rect = new Rect(bottomleft.transform.position.x,
-                                bottomleft.transform.position.y,
-                                topright.transform.position.x - bottomleft.transform.position.x,
-                                topright.transform.position.y - bottomleft.transform.position.y);*/
+
+        arena_rect = camera_rect;
     }
 
 
@@ -64,6 +55,6 @@ public class CameraRect : MonoBehaviour
     // Returns true if the point is within the game bounds
     public bool PointWithinCameraBounds(Vector2 point)
     {
-        return arena_rect.Contains(point);
+        return camera_rect.Contains(point);
     }
 }
