@@ -102,6 +102,8 @@ public class Trial : MonoBehaviour
 
     public TextAsset input_delay_values;        // One value per line
     public List<int> input_delay_per_round = new List<int>();   // Read from a text file (input_delay_values)
+    public string practice_term = "Practice";
+    public string survey_term = "Survey";
     public bool[] practice_rounds;      // Read from a text file, which rounds are practice (don't count for data)
     public bool[] survey_rounds;        // Read from a text file, which rounds should launch a survey after they're done?
     public string[] other_terms_rounds;   // If any other terms appear, put them here. They appear after the second comma. Ex: 100,practice,switch
@@ -169,10 +171,10 @@ public class Trial : MonoBehaviour
                 if (items.Length > 1)
                 {
                     // Get the practice round
-                    if (items[1].Contains("Practice"))
+                    if (items[1].Contains(practice_term))
                         practice_rounds[round_number] = true;
                     // Get the survey
-                    if (items[1].Contains("Survey"))
+                    else if (items[1].Contains(survey_term))
                         survey_rounds[round_number] = true;
                     if (items.Length > 2 && items[2] != "")
                     {

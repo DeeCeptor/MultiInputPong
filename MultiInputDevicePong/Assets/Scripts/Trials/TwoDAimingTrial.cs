@@ -21,7 +21,12 @@ public class TwoDAimingTrialRecord : Round_Record
     public List<float> travel_path_x = new List<float>();
     public List<float> travel_path_y = new List<float>();
 
+    // Fitts
+    public float index_of_diff = 0;
+    public float index_of_perf = 0;
+
     // Path measures
+    public int num_path_points;     // How many points of data did we poll from the mouse?
     public float movement_error;
     public float movement_offset;
     public float movement_variability;
@@ -29,6 +34,7 @@ public class TwoDAimingTrialRecord : Round_Record
     public int target_reentry = -1;     // These are RE-ENTRIES. Will be -1 if they failed to enter the target at all, and 0 if they entered and never left the target area
     public int move_direction_change;   // Movement changes TOWARDS target
     public int ortho_move_direction_change; // Movement direction changes perpendicular to target
+    public float total_path_distance;  // How far has this path travelled? This is related to the starting distance
     // Distance between middle and nearest edge of target
     // Distance between starting mouse position and edge of target
 
@@ -42,17 +48,17 @@ public class TwoDAimingTrialRecord : Round_Record
 
     public override string ToString()
     {
-        return base.ToString() + "," + device + "," + num_clicks + "," + target_radius + "," + target_center.x + "," + target_center.y + "," + mouse_position_at_click.x + 
+        return base.ToString() + "," + device + "," + num_clicks + "," + index_of_diff + "," + index_of_perf + "," + target_radius + "," + target_center.x + "," + target_center.y + "," + mouse_position_at_click.x + 
             "," + mouse_position_at_click.y + "," + start_mouse_pos.x + "," + start_mouse_pos.y + "," + distance_between_starting_mouse_and_target + "," + distance_between_middle_and_target 
             + "," + movement_error + "," + movement_offset + "," + movement_variability + "," + task_axis_crossing + "," + target_reentry + "," + move_direction_change + "," + ortho_move_direction_change
-            + "," + random_seed + "," + Round_Record.ListToString<float>(travel_path_x) + "," + Round_Record.ListToString<float>(travel_path_y);
+            + "," + total_path_distance + "," + random_seed + "," + num_path_points + "," + Round_Record.ListToString<float>(travel_path_x) + "," + Round_Record.ListToString<float>(travel_path_y);
     }
     public override string FieldNames()
     {
-        return base.FieldNames() + ",device,num_clicks,target_radius,target_center_x,target_center_y,mouse_position_at_click_x" +
+        return base.FieldNames() + ",device,num_clicks,ID,IP,target_radius,target_center_x,target_center_y,mouse_position_at_click_x" +
             ",mouse_position_at_click_y,start_mouse_pos_x,start_mouse_pos_y,distance_between_starting_mouse_and_target,distance_between_middle_and_target" +
             ",movement_error,movement_offset,movement_variability,task_axis_crossing,target_reentry,move_direction_change,ortho_move_direction_change" +
-            ",random_seed,travel_path_x,travel_path_y";
+            ",total_path_distance,random_seed,num_path_points,travel_path_x,travel_path_y";
     }
 }
 
@@ -97,18 +103,24 @@ public class TwoDAimingTrial : Trial
         cursor_path.sortingLayerName = "Text";
 
         base.Awake();
+
+        if (!Application.isEditor)
+            draw_cursor_path = false;
     }
 
 
     public void ClickedOnTarget(GameObject target, GameObject mouse_pos)
     {
         // Record stuffs
+        // FITTS LAW STUFF
+        // Index of difficulty: Shannon formulation
+        current_round_record.index_of_diff = Mathf.Log( (current_round_record.distance_between_starting_mouse_and_target / current_round_record.target_radius) + 1, 2);
+        // Index of performance: 
+        current_round_record.index_of_perf = current_round_record.index_of_diff / this.time_for_current_round;
 
-        // Location of target
         // Mouse location
         current_round_record.mouse_position_at_click = mouse_pos.transform.position;
-        // Time taken
-        //
+
         target.SetActive(false);
         round_running = false;
 
@@ -174,10 +186,14 @@ public class TwoDAimingTrial : Trial
         int signed_quadrant = unassigned_value;
         int prev_signed_quadrant = unassigned_value;
         int num_angled_movement_dir_changes = 0;
+        float total_distance_travelled = 0;
         for (int x = 1; x < current_round_record.travel_path_vector.Count; x++)
         {
             prev_point = cur_point;
             cur_point = current_round_record.travel_path_vector[x];
+
+            // TOTAL PATH DISTANCE
+            total_distance_travelled += Vector2.Distance(prev_point, cur_point);
 
             // Check and see if the two points are the same position. If so, don't both calculating anything
             // Don't use the first couple of points since they're too close to the origin
@@ -195,9 +211,11 @@ public class TwoDAimingTrial : Trial
                     var got = new GameObject("Task Axis Crossing");
                     got.transform.position = new Vector2((float)intersection.x, (float)intersection.y);
                     // Found point intersection
+                    /*
                     Debug.Log("Intersection: " + cur_point.x + "," + cur_point.y 
                         + ", distance between two used points: " + Vector2.Distance(prev_point, cur_point) + ", P1: " + prev_point + ", P2:" + cur_point
                         + ",distance between start and inter: " + dist_from_start);
+                        */
                 }
 
 
@@ -237,7 +255,7 @@ public class TwoDAimingTrial : Trial
                 {
                     var got = new GameObject("Orthogonal Movement Direction Change");
                     got.transform.position = new Vector2(cur_point.x, cur_point.y);
-                    Debug.Log("Orthogonal Direction change. Prev quad: " + prev_quadrant + ", current cross-prod: " + quadrant);
+                    //Debug.Log("Orthogonal Direction change. Prev quad: " + prev_quadrant + ", current cross-prod: " + quadrant);
                     current_round_record.ortho_move_direction_change++;
                 }
 
@@ -262,11 +280,11 @@ public class TwoDAimingTrial : Trial
         }
 
 
-        // Re-entry shold be handled by a trigger
-
+        current_round_record.num_path_points = current_round_record.travel_path_vector.Count;
         current_round_record.movement_offset = movement_offset;
         current_round_record.movement_error = movement_error;
         current_round_record.movement_variability = movement_variability;
+        current_round_record.total_path_distance = total_distance_travelled;
         Debug.Log("task-axis-crossings: " + current_round_record.task_axis_crossing + 
             ", movement dir change: " + current_round_record.move_direction_change + ", angled move dir changes: " + num_angled_movement_dir_changes + 
             ", ortho move dir change: " + current_round_record.ortho_move_direction_change +
@@ -274,8 +292,10 @@ public class TwoDAimingTrial : Trial
             ", movement_offset: " + movement_offset + ", movement_error: " + movement_error + ", movement_variability: " + movement_variability + ", from number of points: " + n);
         /////////////////////////////////////////////////////////////////////////////////////
 
-
+        // NEW
+        NextRound();
         GoBackToMiddle();
+        round_running = false;
     }
 
     // Get the direction of our movement (comparing current point and previous point), and compare against direction to task axis
@@ -302,13 +322,16 @@ public class TwoDAimingTrial : Trial
         {
             Debug.Log("Starting trial");
             StartTrial();
-            return;
+            //return;
         }
 
-        NextRound();
+        SpawnNewTarget();
+        //NextRound();
     }
     public void SpawnNewTarget()
     {
+        current_round_record.start_mouse_pos = AimingMovement.aiming_movement.transform.position;
+
         // Spawn a target a set distance from the player/cursor, in a random direction
         float distance = target_distances[current_round];
         Vector2 target_pos = GetRandomPosition(distance) + (Vector2) AimingMovement.aiming_movement.transform.position;
@@ -329,6 +352,7 @@ public class TwoDAimingTrial : Trial
         target.transform.localScale = new Vector3(current_round_record.target_radius, current_round_record.target_radius, 1);
 
         current_round_record.distance_between_middle_and_target = Vector2.Distance(Vector2.zero, target_pos);
+        current_round_record.distance_between_starting_mouse_and_target = Vector2.Distance(AimingMovement.aiming_movement.transform.position, current_round_record.target_center);
 
         if (draw_cursor_path)
         {
@@ -336,6 +360,7 @@ public class TwoDAimingTrial : Trial
         }
 
         Debug.Log("Spawned new target at " + target_pos);
+        round_running = true;
     }
     public Vector2 GetRandomPosition(float radius)
     {
@@ -453,15 +478,12 @@ public class TwoDAimingTrial : Trial
             UnityEngine.Random.InitState(random_seed);
         }
 
-        current_round_record.start_mouse_pos = AimingMovement.aiming_movement.transform.position;
 
-        SpawnNewTarget();
-
-        current_round_record.distance_between_starting_mouse_and_target = Vector2.Distance(AimingMovement.aiming_movement.transform.position, current_round_record.target_center);
+        //SpawnNewTarget();
 
         //StartCoroutine(StartRoundIn());
-        start_beep.Play();
-        round_running = true;
+        //start_beep.Play();
+        //round_running = true;
     }
     IEnumerator StartRoundIn()
     {

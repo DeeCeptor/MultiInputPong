@@ -148,6 +148,7 @@ public class AimingMovement : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    
                     clicks_this_update++;
                     clicked_this_frame = true;
                 }
@@ -188,7 +189,9 @@ public class AimingMovement : MonoBehaviour
 
         // Add force to move us where we should be
         //physics.AddForce(potential_position);
-        physics.MovePosition(potential_position);
+        //physics.MovePosition(potential_position);
+        //physics.position = potential_position;
+        this.transform.position = potential_position;
     }
     // Takes the current input, and queues it for later use
     public void QueueCurrentInput()
