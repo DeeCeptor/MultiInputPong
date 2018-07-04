@@ -2225,7 +2225,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Click/press A on the white circles as quickly as you can after they appear
 
-    Do the above tos tart a round'
+    Click on the white circle to start the trial'
 --- !u!222 &705703522
 CanvasRenderer:
   m_ObjectHideFlags: 0

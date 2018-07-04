@@ -75,8 +75,6 @@ public class AimingMovement : MonoBehaviour
         Collider2D hit = Physics2D.OverlapPoint(this.transform.position, click_layermask);
         if (hit != null)
         {
-            Debug.Log("Clicked on " + hit.transform.name);
-
             if (hit.tag == "Invader")
             {
                 // Report a successful click, start next trial
@@ -87,7 +85,7 @@ public class AimingMovement : MonoBehaviour
                 TwoDAimingTrial.aiming_trial.ReturnedToMiddle();
             }
         }
-        if (Trial.trial.trial_running)
+        if (Trial.trial.trial_running && Trial.trial.round_running)
             TwoDAimingTrial.aiming_trial.current_round_record.num_clicks++;
     }
 

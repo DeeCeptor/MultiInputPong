@@ -606,7 +606,7 @@ RectTransform:
   m_GameObject: {fileID: 128133543}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.00001, y: 1.00001, z: 1.00001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 876476305}
   m_Father: {fileID: 1370795342}
@@ -830,7 +830,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Read the question carefully, but try to answer as quickly as possible.
+  m_Text: Read the question carefully, but try to answer based on the rounds since
+    the last survey.
 --- !u!222 &145119948
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -865,7 +866,7 @@ RectTransform:
   m_GameObject: {fileID: 155667797}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.00001, y: 1.00001, z: 1.00001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 43994870}
   m_Father: {fileID: 1370795342}
@@ -1203,7 +1204,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'I felt capable and effective when playing that last round.
+  m_Text: 'Since the last survey, I felt capable and effective when playing.
 
 
     (press 1,2,3,4,5 on your keyboard)'
@@ -1699,6 +1700,7 @@ MonoBehaviour:
   target_sizes: []
   target_distances: []
   random_seed: 1
+  return_to_middle: 1
   draw_cursor_path: 1
   cursor_path: {fileID: 1318198764}
   task_axis_line: {fileID: 360832482}
@@ -2093,7 +2095,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'While using the current device, how well I did was completely due to me.
+  m_Text: 'Since the last survey, how well I did was completely due to me.
 
 
     (press 1,2,3,4,5 on your keyboard)'
@@ -2387,7 +2389,7 @@ GameObject:
   - component: {fileID: 645372200}
   - component: {fileID: 645372199}
   m_Layer: 5
-  m_Name: I put a lot of effort into that last round.
+  m_Name: I put a lot of effort into those rounds.
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2462,7 +2464,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'I put a lot of effort into that last round.
+  m_Text: 'Since the last survey, I put a lot of effort into those rounds.
 
 
     (press 1,2,3,4,5 on your keyboard)'
@@ -2908,7 +2910,7 @@ RectTransform:
   m_GameObject: {fileID: 787994204}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.00001, y: 1.00001, z: 1.00001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 681254421}
   m_Father: {fileID: 1370795342}
@@ -3007,7 +3009,7 @@ RectTransform:
   m_GameObject: {fileID: 795360734}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.00001, y: 1.00001, z: 1.00001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1534987003}
   m_Father: {fileID: 1370795342}
@@ -3707,7 +3709,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Overall, using the current input device was fun.
+  m_Text: 'Since the last survey, using the current input device was fun.
 
 
     (press 1,2,3,4,5 on your keyboard)'
@@ -4157,7 +4159,7 @@ RectTransform:
   m_GameObject: {fileID: 1278078982}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.00001, y: 1.00001, z: 1.00001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 574992222}
   m_Father: {fileID: 1370795342}
@@ -6006,7 +6008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca9f82db5f576b4b8945a8e87581c41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  object_to_activate_next: {fileID: 926839935}
+  object_to_activate_next: {fileID: 0}
   name_of_info: responsive
   min_number: 1
   max_number: 5
@@ -6043,7 +6045,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'During that last round, the movement of the paddle was responsive.
+  m_Text: 'Since the last survey, the cursor movement was responsive.
 
 
     (press 1,2,3,4,5 on your keyboard)'
@@ -6432,7 +6434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ca9f82db5f576b4b8945a8e87581c41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  object_to_activate_next: {fileID: 0}
+  object_to_activate_next: {fileID: 1669150881}
   name_of_info: irritated
   min_number: 1
   max_number: 5
@@ -6469,7 +6471,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'I was frustrated during that last round.
+  m_Text: 'Since the last survey, I was frustrated by the task.
 
 
     (press 1,2,3,4,5 on your keyboard)'

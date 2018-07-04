@@ -15,7 +15,7 @@ public class TwoDAimingTrialRecord : Round_Record
     public float distance_between_starting_mouse_and_target;    // Center to center distance (not counting radius). Starting mouse position
     public float distance_between_middle_and_target;            // Center to center distance (not counting radius). Middle is (0,0)
     public Vector2 start_mouse_pos;
-    public float target_radius; // Size of target area (radius, in-game units)
+    public float target_width; // NO RADIUS (distance from edge to edge)
     public int num_clicks;
     public int random_seed;
     public List<float> travel_path_x = new List<float>();
@@ -48,14 +48,14 @@ public class TwoDAimingTrialRecord : Round_Record
 
     public override string ToString()
     {
-        return base.ToString() + "," + device + "," + num_clicks + "," + index_of_diff + "," + index_of_perf + "," + target_radius + "," + target_center.x + "," + target_center.y + "," + mouse_position_at_click.x + 
+        return base.ToString() + "," + device + "," + num_clicks + "," + index_of_diff + "," + index_of_perf + "," + target_width + "," + target_center.x + "," + target_center.y + "," + mouse_position_at_click.x + 
             "," + mouse_position_at_click.y + "," + start_mouse_pos.x + "," + start_mouse_pos.y + "," + distance_between_starting_mouse_and_target + "," + distance_between_middle_and_target 
             + "," + movement_error + "," + movement_offset + "," + movement_variability + "," + task_axis_crossing + "," + target_reentry + "," + move_direction_change + "," + ortho_move_direction_change
             + "," + total_path_distance + "," + random_seed + "," + num_path_points + "," + Round_Record.ListToString<float>(travel_path_x) + "," + Round_Record.ListToString<float>(travel_path_y);
     }
     public override string FieldNames()
     {
-        return base.FieldNames() + ",device,num_clicks,ID,IP,target_radius,target_center_x,target_center_y,mouse_position_at_click_x" +
+        return base.FieldNames() + ",device,num_clicks,ID,IP,target_width,target_center_x,target_center_y,mouse_position_at_click_x" +
             ",mouse_position_at_click_y,start_mouse_pos_x,start_mouse_pos_y,distance_between_starting_mouse_and_target,distance_between_middle_and_target" +
             ",movement_error,movement_offset,movement_variability,task_axis_crossing,target_reentry,move_direction_change,ortho_move_direction_change" +
             ",total_path_distance,random_seed,num_path_points,travel_path_x,travel_path_y";
@@ -83,6 +83,7 @@ public class TwoDAimingTrial : Trial
     public List<float> target_sizes = new List<float>();
     public List<float> target_distances = new List<float>();
     public int random_seed = 1234;
+    public bool return_to_middle = true;
 
     public bool draw_cursor_path;
     public LineRenderer cursor_path;
@@ -114,7 +115,7 @@ public class TwoDAimingTrial : Trial
         // Record stuffs
         // FITTS LAW STUFF
         // Index of difficulty: Shannon formulation
-        current_round_record.index_of_diff = Mathf.Log( (current_round_record.distance_between_starting_mouse_and_target / current_round_record.target_radius) + 1, 2);
+        current_round_record.index_of_diff = Mathf.Log( (current_round_record.distance_between_starting_mouse_and_target / current_round_record.target_width) + 1, 2);
         // Index of performance: 
         current_round_record.index_of_perf = current_round_record.index_of_diff / this.time_for_current_round;
 
@@ -191,6 +192,7 @@ public class TwoDAimingTrial : Trial
         {
             prev_point = cur_point;
             cur_point = current_round_record.travel_path_vector[x];
+            Vector2 midway_between_cur_and_prev = (prev_point + cur_point) / 2;
 
             // TOTAL PATH DISTANCE
             total_distance_travelled += Vector2.Distance(prev_point, cur_point);
@@ -229,11 +231,11 @@ public class TwoDAimingTrial : Trial
                 cross_product = direction.x * task_axis_heading.y - direction.y * task_axis_heading.x;
                 if (Mathf.Sign(cross_product) != Mathf.Sign(prev_cross_product) && prev_cross_product != unassigned_value)
                 {
-                    /*
+                    
                     var got = new GameObject("Movement Direction Change");
-                    got.transform.position = new Vector2(cur_point.x, cur_point.y);
+                    got.transform.position = midway_between_cur_and_prev;// new Vector2(cur_point.x, cur_point.y);
                     Debug.Log("Direction change. Prev cross-prod: " + prev_cross_product + ", current cross-prod: " + cross_product);
-                    */
+                    
                     current_round_record.move_direction_change++;
                 }
 
@@ -294,8 +296,13 @@ public class TwoDAimingTrial : Trial
 
         // NEW
         NextRound();
-        GoBackToMiddle();
-        round_running = false;
+        if (return_to_middle)
+        {
+            GoBackToMiddle();
+            round_running = false;
+        }
+        else
+            SpawnNewTarget();
     }
 
     // Get the direction of our movement (comparing current point and previous point), and compare against direction to task axis
@@ -314,7 +321,6 @@ public class TwoDAimingTrial : Trial
     // Starts a new round (with a new round record)
     public void ReturnedToMiddle()
     {
-        Debug.Log("Clicked on middle");
         go_to_middle.SetActive(false);
 
         // Start the trail if we haven't already
@@ -348,8 +354,8 @@ public class TwoDAimingTrial : Trial
         target.SetActive(true);
 
         // Set target size
-        current_round_record.target_radius = target_sizes[current_round];
-        target.transform.localScale = new Vector3(current_round_record.target_radius, current_round_record.target_radius, 1);
+        current_round_record.target_width = target_sizes[current_round];
+        target.transform.localScale = new Vector3(current_round_record.target_width, current_round_record.target_width, 1);
 
         current_round_record.distance_between_middle_and_target = Vector2.Distance(Vector2.zero, target_pos);
         current_round_record.distance_between_starting_mouse_and_target = Vector2.Distance(AimingMovement.aiming_movement.transform.position, current_round_record.target_center);
@@ -443,7 +449,10 @@ public class TwoDAimingTrial : Trial
 
         base.StartRound();
 
-        round_running = false;
+        if (return_to_middle)
+            round_running = false;
+        else
+            round_running = true;
 
         // Add new round record to list
         round_results.Add(current_round_record);
