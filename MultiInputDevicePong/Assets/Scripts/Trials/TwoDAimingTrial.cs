@@ -97,7 +97,7 @@ public class TwoDAimingTrial : Trial
     public override void Awake()
     {
         aiming_trial = this;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         //UnityEngine.Random.InitState(random_seed);
 
         task_axis_line.sortingLayerName = "Text";
@@ -137,10 +137,12 @@ public class TwoDAimingTrial : Trial
         Vector2 task_axis_direction = task_axis_heading / task_axis_heading.magnitude;  // Normalized task axis direction
 
         Line task_axis_line = new Line(task_axis_start.x, task_axis_start.y, task_axis_end.x, task_axis_end.y);
+        /*
         var go = new GameObject("start");
         go.transform.position = new Vector2((float)task_axis_start.x, (float)task_axis_start.y);
         go = new GameObject("end");
         go.transform.position = new Vector2((float)task_axis_end.x, (float)task_axis_end.y);
+        */
 
         // Determine line equation of task axis
         float m = (task_axis_end.y - task_axis_start.y) / (task_axis_end.x - task_axis_start.x);
@@ -317,6 +319,29 @@ public class TwoDAimingTrial : Trial
     public void GoBackToMiddle()
     {
         go_to_middle.SetActive(true);
+        AimingMovement.aiming_movement.ResetInputQueues();
+        AimingMovement.aiming_movement.transform.position = Vector2.zero;
+        StartCoroutine(LockToMiddle());
+    }
+    IEnumerator LockToMiddle()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        /*
+        float time_remaining = 4f;
+        while (time_remaining >= 0)
+        {
+            Debug.Log("Mouse pos: " + Input.mousePosition +  " in-game cursor pos: " + AimingMovement.aiming_movement.transform.position);
+            time_remaining -= Time.deltaTime;
+            yield return null;
+        }
+        //yield return new WaitForSeconds(4f);*/
+        yield return null;
+       // AimingMovement.aiming_movement.ResetInputQueues();
+        AimingMovement.aiming_movement.transform.position = Vector2.zero;
+        yield return null;
+        //AimingMovement.aiming_movement.ResetInputQueues();
+        AimingMovement.aiming_movement.transform.position = Vector2.zero;
+        Cursor.lockState = CursorLockMode.None;
     }
     // Starts a new round (with a new round record)
     public void ReturnedToMiddle()
@@ -337,7 +362,7 @@ public class TwoDAimingTrial : Trial
     public void SpawnNewTarget()
     {
         current_round_record.start_mouse_pos = AimingMovement.aiming_movement.transform.position;
-
+        Debug.Log("Current cursor pos: " + current_round_record.start_mouse_pos);
         // Spawn a target a set distance from the player/cursor, in a random direction
         float distance = target_distances[current_round];
         Vector2 target_pos = GetRandomPosition(distance) + (Vector2) AimingMovement.aiming_movement.transform.position;
@@ -583,7 +608,6 @@ public class TwoDAimingTrial : Trial
                 cursor_path.SetPositions(current_round_record.travel_path_vector.ToArray());
             }
         }
-
         base.Update();
     }
 

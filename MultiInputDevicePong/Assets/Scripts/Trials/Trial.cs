@@ -217,7 +217,6 @@ public class Trial : MonoBehaviour
         if (input_delay_per_round.Count > current_round)
         {
             GlobalSettings.InputDelayFrames = input_delay_per_round[current_round];
-            
             Debug.Log("Setting input delay to: " + input_delay_per_round[current_round], this.gameObject);
         }
 

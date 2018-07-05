@@ -90,7 +90,7 @@ public class AimingMovement : MonoBehaviour
     }
 
     int clicks_this_update = 0;
-    Vector2 mouse_pos;
+
     void FixedUpdate () 
 	{
         KinematicMovement();
@@ -99,7 +99,7 @@ public class AimingMovement : MonoBehaviour
     private void Update()
     {
         clicks_this_update = 0;     // 11 clicks during this update?
-        mouse_pos = Input.mousePosition;
+
         if (TwoDAimingTrial.aiming_trial.round_running)
         {
             // Get the current position
@@ -168,10 +168,11 @@ public class AimingMovement : MonoBehaviour
 
         ////////////////////////////////////////////////////////
         // Don't move if there's no input
-        if (cur_input == Vector2.zero)
+        if (cur_input == Vector2.zero && Cursor.lockState != CursorLockMode.Locked)
             return;
 
-        Vector3 potential_position = MoveToNewPosition(cur_input);
+        Vector2 potential_position;
+        potential_position = MoveToNewPosition(cur_input);
 
         if (!allow_y_movement)
             potential_position.y = this.transform.position.y;
@@ -190,6 +191,8 @@ public class AimingMovement : MonoBehaviour
         //physics.MovePosition(potential_position);
         //physics.position = potential_position;
         this.transform.position = potential_position;
+
+        //Debug.Log("Mouse pos: " + Input.mousePosition + " cursor pos: " + this.transform.position + " dq'd pos: " + cur_input + " dq'd wordpos: " + potential_position + " cursor mode: " + Cursor.lockState);
     }
     // Takes the current input, and queues it for later use
     public void QueueCurrentInput()
@@ -226,8 +229,19 @@ public class AimingMovement : MonoBehaviour
                 cur_input.y = Input.mousePosition.y;
         }
 
+        
+        // Set enqueued position to be center if the cursor is supposed to be locked to the center of the screen
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            cur_input = CameraRect.screen_center;
+        }
+
         // Place input in our queue
-        input_queue.Enqueue(cur_input);
+        EnqueuePosition(cur_input);
+    }
+    public void EnqueuePosition(Vector2 position)
+    {
+        input_queue.Enqueue(position);
     }
     // Must either use absolute positioning (mouse) or relational positioning (controller joystick)
     public Vector2 MoveToNewPosition(Vector2 cur_input)

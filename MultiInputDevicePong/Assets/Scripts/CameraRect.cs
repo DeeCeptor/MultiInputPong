@@ -16,6 +16,9 @@ public class CameraRect : MonoBehaviour
     public GameObject topright;
     public GameObject bottomleft;
 
+    public static Vector2 screen_center;   // Center of screen in pixel coordinates
+
+
     Camera cam;
 
 
@@ -37,6 +40,8 @@ public class CameraRect : MonoBehaviour
                                 topRight.y - bottomLeft.y);
 
         arena_rect = camera_rect;
+
+        screen_center = cam.WorldToScreenPoint(Vector2.zero);
     }
 
 
