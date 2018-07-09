@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class TwoDAimingTrialRecord : Round_Record
 {
+    public string device_orderings;     // Orderings for this participant
+    public int num_devices_switched;    // First device is 1, second device is 2, etc.
     public GlobalSettings.Input_Device_Type device;     // Independent variable, were they using the mouse, drawing tablet or touchscreen?
 
     // Recorded at the START OF A ROUND
@@ -15,6 +17,7 @@ public class TwoDAimingTrialRecord : Round_Record
     public float distance_between_starting_mouse_and_target;    // Center to center distance (not counting radius). Starting mouse position
     public float distance_between_middle_and_target;            // Center to center distance (not counting radius). Middle is (0,0)
     public Vector2 start_mouse_pos;
+    public float starting_angle_to_targ;    // 0-359, starting at middle top, going round clockwise, increasing
     public float target_width; // NO RADIUS (distance from edge to edge)
     public int num_clicks;
     public int random_seed;
@@ -41,6 +44,7 @@ public class TwoDAimingTrialRecord : Round_Record
     // Recorded at the END OF A ROUND
     // Round time is how long it took them to click it
     public Vector2 mouse_position_at_click;
+    public float distance_between_click_and_targ_center;  // Absolute distance. 0 means directly on target.
 
     // NOT OUTPUT TO FILE
     public List<Vector3> travel_path_vector = new List<Vector3>();  // Vector3s to facility linerenderer debugging
@@ -48,15 +52,15 @@ public class TwoDAimingTrialRecord : Round_Record
 
     public override string ToString()
     {
-        return base.ToString() + "," + device + "," + num_clicks + "," + index_of_diff + "," + index_of_perf + "," + target_width + "," + target_center.x + "," + target_center.y + "," + mouse_position_at_click.x + 
-            "," + mouse_position_at_click.y + "," + start_mouse_pos.x + "," + start_mouse_pos.y + "," + distance_between_starting_mouse_and_target + "," + distance_between_middle_and_target 
+        return base.ToString() + "," + device_orderings + "," + num_devices_switched + "," + device + "," + num_clicks + "," + index_of_diff + "," + index_of_perf + "," + target_width + "," + target_center.x + "," + target_center.y + "," + starting_angle_to_targ + "," + mouse_position_at_click.x + 
+            "," + mouse_position_at_click.y + "," + distance_between_click_and_targ_center + "," + start_mouse_pos.x + "," + start_mouse_pos.y + "," + distance_between_starting_mouse_and_target + "," + distance_between_middle_and_target 
             + "," + movement_error + "," + movement_offset + "," + movement_variability + "," + task_axis_crossing + "," + target_reentry + "," + move_direction_change + "," + ortho_move_direction_change
             + "," + total_path_distance + "," + random_seed + "," + num_path_points + "," + Round_Record.ListToString<float>(travel_path_x) + "," + Round_Record.ListToString<float>(travel_path_y);
     }
     public override string FieldNames()
     {
-        return base.FieldNames() + ",device,num_clicks,ID,IP,target_width,target_center_x,target_center_y,mouse_position_at_click_x" +
-            ",mouse_position_at_click_y,start_mouse_pos_x,start_mouse_pos_y,distance_between_starting_mouse_and_target,distance_between_middle_and_target" +
+        return base.FieldNames() + ",device_orderings,num_devices_switched,device,num_clicks,ID,IP,target_width,target_center_x,target_center_y,starting_angle_to_targ,mouse_position_at_click_x" +
+            ",mouse_position_at_click_y,distance_between_click_and_targ_center,start_mouse_pos_x,start_mouse_pos_y,distance_between_starting_mouse_and_target,distance_between_middle_and_target" +
             ",movement_error,movement_offset,movement_variability,task_axis_crossing,target_reentry,move_direction_change,ortho_move_direction_change" +
             ",total_path_distance,random_seed,num_path_points,travel_path_x,travel_path_y";
     }
@@ -97,7 +101,7 @@ public class TwoDAimingTrial : Trial
     public override void Awake()
     {
         aiming_trial = this;
-        //Cursor.visible = false;
+        Cursor.visible = false;
         //UnityEngine.Random.InitState(random_seed);
 
         task_axis_line.sortingLayerName = "Text";
@@ -121,6 +125,7 @@ public class TwoDAimingTrial : Trial
 
         // Mouse location
         current_round_record.mouse_position_at_click = mouse_pos.transform.position;
+        current_round_record.distance_between_click_and_targ_center = Vector2.Distance(current_round_record.mouse_position_at_click, current_round_record.target_center);
 
         target.SetActive(false);
         round_running = false;
@@ -319,9 +324,10 @@ public class TwoDAimingTrial : Trial
     public void GoBackToMiddle()
     {
         go_to_middle.SetActive(true);
-        AimingMovement.aiming_movement.ResetInputQueues();
-        AimingMovement.aiming_movement.transform.position = Vector2.zero;
-        StartCoroutine(LockToMiddle());
+
+        // Only do this for controller. Not sure about the mouse. Seems to confuse people.
+        if ((GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller || GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Mouse))
+            StartCoroutine(LockToMiddle());
     }
     IEnumerator LockToMiddle()
     {
@@ -336,7 +342,7 @@ public class TwoDAimingTrial : Trial
         }
         //yield return new WaitForSeconds(4f);*/
         yield return null;
-       // AimingMovement.aiming_movement.ResetInputQueues();
+        AimingMovement.aiming_movement.ResetInputQueues();
         AimingMovement.aiming_movement.transform.position = Vector2.zero;
         yield return null;
         //AimingMovement.aiming_movement.ResetInputQueues();
@@ -384,7 +390,8 @@ public class TwoDAimingTrial : Trial
 
         current_round_record.distance_between_middle_and_target = Vector2.Distance(Vector2.zero, target_pos);
         current_round_record.distance_between_starting_mouse_and_target = Vector2.Distance(AimingMovement.aiming_movement.transform.position, current_round_record.target_center);
-
+        current_round_record.starting_angle_to_targ = AngleFrom(current_round_record.start_mouse_pos, target_pos);
+        Debug.Log("angle:" + current_round_record.starting_angle_to_targ);
         if (draw_cursor_path)
         {
             task_axis_line.SetPositions(new Vector3[] { current_round_record.start_mouse_pos, target_pos });
@@ -428,6 +435,15 @@ public class TwoDAimingTrial : Trial
         Debug.Log("Done loading settings", this.gameObject);
     }
 
+    // https://math.stackexchange.com/questions/878785/how-to-find-an-angle-in-range0-360-between-2-vectors
+    public float AngleFrom(Vector2 from, Vector2 to)
+    {
+        float dot = from.x * to.x + from.y * to.x;    
+        float det = from.x * to.y - from.y * to.x;     
+        float angle = Mathf.Atan2(det, dot);
+        return angle;
+    }
+
 
     // Called 3 times per participant, called when a Practice round starts
     public void SetInputDeviceType()
@@ -443,7 +459,7 @@ public class TwoDAimingTrial : Trial
             Debug.LogWarning("Warning, no input device order set, using " + GlobalSettings.current_input_device);
             return;
         }
-
+        GlobalSettings.num_devices_switched++;
         // Reinitialize random seed so EACH device case gets the same random numbers
         UnityEngine.Random.InitState(random_seed);
 
@@ -484,6 +500,7 @@ public class TwoDAimingTrial : Trial
         current_round_record.participant_id = "" + GlobalSettings.GetParticipantId(0);
         current_round_record.ms_input_lag_of_round = input_delay_per_round[current_round];
         current_round_record.random_seed = random_seed;
+        current_round_record.device_orderings = GlobalSettings.device_orderings;
 
         // IF this is a practice round, set the device type
         // May need to change this
@@ -500,6 +517,7 @@ public class TwoDAimingTrial : Trial
 
         }
         current_round_record.device = GlobalSettings.current_input_device;
+        current_round_record.num_devices_switched = GlobalSettings.num_devices_switched;
 
         // Reset random seed if we're switching lag levels
         if (prev_round_record == null 

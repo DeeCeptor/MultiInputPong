@@ -131,6 +131,7 @@ public class Trial : MonoBehaviour
         survey_rounds = new bool[total_rounds];
         other_terms_rounds = new string[total_rounds];
         default_time_limit = time_limit;
+        GlobalSettings.num_devices_switched = 0;
         PopulateInputDelays();
     }
     public virtual void Start()

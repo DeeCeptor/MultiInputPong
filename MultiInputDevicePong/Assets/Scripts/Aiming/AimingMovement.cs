@@ -102,11 +102,11 @@ public class AimingMovement : MonoBehaviour
 
         if (TwoDAimingTrial.aiming_trial.round_running)
         {
+            // Records path whether or not our position has changed at all
             // Get the current position
             Vector3 current_pos = new Vector3(this.transform.position.x, this.transform.position.y, 1);
             TwoDAimingTrial.aiming_trial.current_round_record.travel_path_vector.Add(current_pos);
-
-            // Record it for posterity's sake
+            // Record it again split into x and y
             TwoDAimingTrial.aiming_trial.current_round_record.travel_path_x.Add(current_pos.x);
             TwoDAimingTrial.aiming_trial.current_round_record.travel_path_y.Add(current_pos.y);
         }
@@ -231,10 +231,12 @@ public class AimingMovement : MonoBehaviour
 
         
         // Set enqueued position to be center if the cursor is supposed to be locked to the center of the screen
+        /*
         if (Cursor.lockState == CursorLockMode.Locked)
         {
             cur_input = CameraRect.screen_center;
         }
+        */
 
         // Place input in our queue
         EnqueuePosition(cur_input);
@@ -246,19 +248,27 @@ public class AimingMovement : MonoBehaviour
     // Must either use absolute positioning (mouse) or relational positioning (controller joystick)
     public Vector2 MoveToNewPosition(Vector2 cur_input)
     {
-        Vector2 new_pos;
-        // RELATIVE MOVEMENT (controller)
-        if (GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller)
+        // If the cursor should be locked AND we're using a controller or mouse (the only devices it makes sense to lock the cursor), always set our position to be centered
+        if (Cursor.lockState == CursorLockMode.Locked && 
+            (GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller || GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Mouse))
         {
-            new_pos = (Vector2)this.transform.position + cur_input;
+            return cur_input = CameraRect.screen_center;
         }
-        // ABSOLUTE POSITION/MOVEMENT   MOUSE/TOUCHSCREEN/DRAWING TABLET
         else
         {
-            new_pos = Camera.main.ScreenToWorldPoint(cur_input);
+            Vector2 new_pos;
+            // RELATIVE MOVEMENT (controller)
+            if (GlobalSettings.current_input_device == GlobalSettings.Input_Device_Type.Controller)
+            {
+                new_pos = (Vector2)this.transform.position + cur_input;
+            }
+            // ABSOLUTE POSITION/MOVEMENT   MOUSE/TOUCHSCREEN/DRAWING TABLET
+            else
+            {
+                new_pos = Camera.main.ScreenToWorldPoint(cur_input);
+            }
+            return new_pos;
         }
-
-        return new_pos;
     }
 
 

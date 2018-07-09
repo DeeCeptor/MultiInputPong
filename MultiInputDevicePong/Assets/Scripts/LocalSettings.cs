@@ -9,7 +9,8 @@ public static class GlobalSettings
     public enum Input_Device_Type { Mouse, Drawing_Tablet, Touchscreen, Controller };
     public static Input_Device_Type current_input_device = Input_Device_Type.Mouse;
     public static Queue<Input_Device_Type> order_of_device_types = new Queue<Input_Device_Type>();
-
+    public static string device_orderings = "None";     // Record this to store in CSV
+    public static int num_devices_switched = 0;     // 1 is the first device, 2 is second, etc. Be sure to reset this if if head back to the Trial scene
 
     // 0 means no input delay. 5 means 5 fixedupdates will pass before the input is applied
     public static int InputDelayFrames

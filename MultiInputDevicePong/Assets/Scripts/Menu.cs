@@ -31,24 +31,28 @@ public class Menu : MonoBehaviour
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
+                GlobalSettings.device_orderings = "M->D->T->C";
                 break;
             case 2:
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Mouse);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
+                GlobalSettings.device_orderings = "C->M->D->T";
                 break;
             case 3:
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Mouse);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
+                GlobalSettings.device_orderings = "T->C->M->D";
                 break;
             case 4:
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Drawing_Tablet);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Touchscreen);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Controller);
                 GlobalSettings.order_of_device_types.Enqueue(GlobalSettings.Input_Device_Type.Mouse);
+                GlobalSettings.device_orderings = "D->T->C->M";
                 break;
         }
 
