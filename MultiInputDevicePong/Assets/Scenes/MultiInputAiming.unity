@@ -1668,8 +1668,8 @@ MonoBehaviour:
   dont_check_player_count: 0
   trial_running: 0
   round_running: 0
-  enforce_time_limit: 0
-  time_limit: 20
+  enforce_time_limit: 1
+  time_limit: 10
   half_time_for_practice_rounds: 0
   survey_objects_to_activate:
   - {fileID: 91361631}
@@ -1699,6 +1699,7 @@ MonoBehaviour:
   target: {fileID: 426820386}
   target_sizes: []
   target_distances: []
+  target_speeds: []
   random_seed: 1
   return_to_middle: 1
   draw_cursor_path: 1
@@ -1766,6 +1767,7 @@ GameObject:
   - component: {fileID: 426820388}
   - component: {fileID: 426820387}
   - component: {fileID: 426820389}
+  - component: {fileID: 426820390}
   m_Layer: 14
   m_Name: Target
   m_TagString: Invader
@@ -1822,7 +1824,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 426820386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.67, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1843,6 +1845,26 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &426820390
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 426820386}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: 9d1c9f23e29545f43bf5155a7a70b776, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &428081104
 GameObject:
   m_ObjectHideFlags: 0
